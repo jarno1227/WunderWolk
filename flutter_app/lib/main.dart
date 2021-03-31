@@ -56,13 +56,19 @@ class _WeatherMode extends State<WeatherMode> {
           Center(
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
-              children: [TitleSection('Weather Mode'), textSection],
+              children: [
+                TitleSection('Weather Mode', 42),
+                TitleSection('🌥', 200)
+              ],
             ),
           ),
           Center(
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
-              children: [TitleSection('Mood Mode'), textSection],
+              children: [
+                TitleSection('Mood Mode', 42),
+                TitleSection('😄', 200)
+              ],
             ),
           ),
         ],
@@ -86,8 +92,9 @@ Widget textSection = Container(
 
 class TitleSection extends StatelessWidget {
   final String title;
+  final double size;
 
-  const TitleSection(this.title);
+  const TitleSection(this.title, this.size);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +102,7 @@ class TitleSection extends StatelessWidget {
       margin: const EdgeInsets.only(top: 10.0),
       child: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
       ),
     );
   }
