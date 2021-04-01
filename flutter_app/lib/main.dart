@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,19 +24,20 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xff1B4060),
         primarySwatch: Colors.indigo,
       ),
-      home: WeatherMode(),
+      home: WunderWolkModes(),
     );
   }
 }
 
-class WeatherMode extends StatefulWidget {
+class WunderWolkModes extends StatefulWidget {
   @override
-  _WeatherMode createState() => _WeatherMode();
+  _WunderWolkModes createState() => _WunderWolkModes();
 }
 
 final controller = PageController(initialPage: 0);
+double _value = 0;
 
-class _WeatherMode extends State<WeatherMode> {
+class _WunderWolkModes extends State<WunderWolkModes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +60,43 @@ class _WeatherMode extends State<WeatherMode> {
               //mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TitleSection('Weather Mode', 42),
-                TitleSection('🌥', 200)
+                TitleSection('🌥', 200),
+                Spacer(),
+                Container(
+                  margin: EdgeInsets.only(bottom: 100),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '☼',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Container(
+                          width: 300,
+                          child: CupertinoSlider(
+                            min: 0,
+                            max: 100,
+                            value: _value,
+                            onChanged: (value) {
+                              setState(() {
+                                _value = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Text(
+                          '☀︎',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -67,7 +105,43 @@ class _WeatherMode extends State<WeatherMode> {
               //mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TitleSection('Mood Mode', 42),
-                TitleSection('😄', 200)
+                TitleSection('😄', 200),
+                Spacer(),
+                Container(
+                  margin: EdgeInsets.only(bottom: 100),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '☼',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Container(
+                          width: 300,
+                          child: CupertinoSlider(
+                            min: 0,
+                            max: 100,
+                            value: _value,
+                            onChanged: (value) {
+                              setState(() {
+                                _value = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Text(
+                          '☀︎',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
