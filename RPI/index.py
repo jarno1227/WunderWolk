@@ -1,3 +1,2 @@
-
-import modules.api as api
-print(api)
+from modules.program import Program
+program = Program()
