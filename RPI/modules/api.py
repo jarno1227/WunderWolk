@@ -3,8 +3,9 @@ from abc import ABC, abstractmethod
 
 
 class Api(ABC):
-    def __init__(self, key):
+    def __init__(self, key, settings):
         self._api_key = key
+        self._settings = settings
 
     @property
     def api_key(self):
@@ -14,6 +15,14 @@ class Api(ABC):
     def api_key(self, val):
         self._api_key = val
 
+    @property
+    def settings(self):
+        return self._settings
+
+    @settings.setter
+    def settings(self, value):
+        self._settings = value
+
     @abstractmethod
     def fetch_data(self):
         pass
@@ -21,7 +30,7 @@ class Api(ABC):
 
 class SocialConnect(Api):
     def __init__(self, key, settings):
-        super().__init__(key)
+        super().__init__(key, settings)
 
     def fetch_data(self):
         pass
@@ -29,10 +38,10 @@ class SocialConnect(Api):
 
 class WeatherConnect(Api):
     def __init__(self, key, settings):
-        super(WeatherConnect, self).__init__(key)
+        super(WeatherConnect, self).__init__(key, settings)
         self.baseUrl = "https://api.openweathermap.org/data/2.5/onecall?"
         self.coordinates = "lat=" + str(settings.location[0]) + "&lon=" + str(settings.location[1])
-        self.exclusions = "exclude=" + "current,minutely,daily"
+        self.exclusions = "exclude=" + "current,minutely,daily"  # + ",hourly"
         self.units = "units=" + "metric"
         self.app_id = "appid=" + self.api_key
         self._complete_url = ""
