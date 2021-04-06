@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:flutter_app/mqtt_client.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,10 +36,19 @@ class WunderWolkModes extends StatefulWidget {
   _WunderWolkModes createState() => _WunderWolkModes();
 }
 
-final controller = PageController(initialPage: 0);
-double _value = 0;
-
 class _WunderWolkModes extends State<WunderWolkModes> {
+  MqttClient client;
+  var topic = "topic/test";
+
+  void _publish(String message) {
+    final builder = MqttClientPayloadBuilder();
+    builder.addString('Hello from flutter_client');
+    client?.publishMessage(topic, MqttQos.atLeastOnce, builder.payload);
+  }
+
+  final controller = PageController(initialPage: 0);
+  double _value = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +92,9 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                             min: 0,
                             max: 100,
                             value: _value,
+                            onChangeEnd: (value) {
+                              this._publish(value.toString());
+                            },
                             onChanged: (value) {
                               setState(() {
                                 _value = value;
@@ -126,6 +140,9 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                             min: 0,
                             max: 100,
                             value: _value,
+                            onChangeEnd: (value) {
+                              this._publish(value.toString());
+                            },
                             onChanged: (value) {
                               setState(() {
                                 _value = value;
