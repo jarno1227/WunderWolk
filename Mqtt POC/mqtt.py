@@ -3,47 +3,56 @@ import settings
 
 
 class MQTT:
-    def __init__(self, username, password, host, set1):
-        self.username = username
-        self.password = password
-        self.host = host
+    def __init__(self, user, pw, set1):
+        self.user = user
+        self.pw = pw
         self.set1 = set1
+        self.messages = []
 
+        self.mqttc = mqtt.Client()
+        self.mqttc.username_pw_set(user, pw)
+        self.mqttc.on_message = self.on_message
+        self.mqttc.on_connect = self.on_connect
+        self.mqttc.on_publish = self.on_publish
+        self.mqttc.on_subscribe = self.on_subscribe
+        self.mqttc.connect("maqiatto.com", 1883, 60)
+        self.mqttc.loop_start()
 
-    def on_connect(mqttc, obj, flags, rc):
+    def on_connect(self, mqttc, obj, flags, rc):
         print("rc: " + str(rc))
 
-    def on_message(self, obj, msg):
+    def on_message(self, client, userdata, msg):
         print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
         message = str(msg.payload)
         message = message[2:]
         message = message[:-1]
-        self.set1.testValue = int(message)
 
-    def on_publish(mqttc, obj, mid):
+
+        if message[0] == '#' and message[-1] == '%':
+            self.messages.append(message)
+            print(self.messages)
+        else:
+            print("Wrongly formatted message. (start with a # and end with a %)")
+
+        try:
+            self.set1.testValue = int(message)
+        except:
+            pass
+
+    def on_publish(self, mqttc, obj, mid):
         print("mid: " + str(mid))
 
-    def on_subscribe(mqttc, obj, mid, granted_qos):
+    def on_subscribe(self, mqttc, obj, mid, granted_qos):
         print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
-    def on_log(mqttc, obj, level, string):
+    def on_log(self, mqttc, obj, level, string):
         print(string)
 
+    def send_message(self, topic, message):
+        self.mqttc.publish(topic, message, qos=0, retain=False)
 
+    def subscribe_topic(self, topic):
+        self.mqttc.subscribe(topic, 0)
 
-    # If you want to use a specific client id, use
-    # mqttc = mqtt.Client("yo-man-bro-ik-ben-het")
-    # but note that the client id must be unique on the broker. Leaving the client
-    # id parameter empty will generate a random id for you.
-    mqttc = mqtt.Client()
-    mqttc.username_pw_set("pacotinie@gmail.com", "Bepperking!")
-    mqttc.on_message = on_message
-    mqttc.on_connect = on_connect
-    mqttc.on_publish = on_publish
-    mqttc.on_subscribe = on_subscribe
-    # Uncomment to enable debug messages
-    # mqttc.on_log = on_log
-    mqttc.connect("maqiatto.com", 1883, 60)
-    mqttc.subscribe("pacotinie@gmail.com/settings", 0)
-
-    mqttc.loop_start()
+    def retrieve_message(self):
+        return self.messages.pop(0)
