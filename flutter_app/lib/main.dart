@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter_app/mqtt_client.dart';
+import 'package:settings_ui/settings_ui.dart';
+import 'package:cupertino_setting_control/cupertino_setting_control.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,7 +49,13 @@ class _WunderWolkModes extends State<WunderWolkModes> {
   }
 
   final controller = PageController(initialPage: 0);
-  double _value = 0;
+  double _brightnessValue = 0;
+
+  updateBrightness(double data) {
+    setState(() {
+      _brightnessValue = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,44 +81,14 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                 TitleSection('Weather Mode', 42),
                 TitleSection('🌥', 200),
                 Spacer(),
+                SettingsSlider('Weather forecast time', ' minutes', 10, 60, 30,
+                    updateBrightness),
+                TestDropdown(),
                 Container(
-                  margin: EdgeInsets.only(bottom: 100),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '☼',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Container(
-                          width: 300,
-                          child: CupertinoSlider(
-                            min: 0,
-                            max: 100,
-                            value: _value,
-                            onChangeEnd: (value) {
-                              this._publish(value.toString());
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                _value = value;
-                              });
-                            },
-                          ),
-                        ),
-                        Text(
-                          '☀︎',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                  margin: EdgeInsets.only(bottom: 50),
+                  child: SettingsSlider('Brightness', '%', 10, 100,
+                      _brightnessValue, updateBrightness),
+                )
               ],
             ),
           ),
@@ -122,43 +100,10 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                 TitleSection('😄', 200),
                 Spacer(),
                 Container(
-                  margin: EdgeInsets.only(bottom: 100),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '☼',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Container(
-                          width: 300,
-                          child: CupertinoSlider(
-                            min: 0,
-                            max: 100,
-                            value: _value,
-                            onChangeEnd: (value) {
-                              this._publish(value.toString());
-                            },
-                            onChanged: (value) {
-                              setState(() {
-                                _value = value;
-                              });
-                            },
-                          ),
-                        ),
-                        Text(
-                          '☀︎',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                  margin: EdgeInsets.only(bottom: 50),
+                  child: SettingsSlider('Brightness', '%', 10, 100,
+                      _brightnessValue, updateBrightness),
+                )
               ],
             ),
           ),
@@ -195,6 +140,62 @@ class TitleSection extends StatelessWidget {
         title,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: size),
       ),
+    );
+  }
+}
+
+class TestDropdown extends StatelessWidget {
+  String _tempType = "°C";
+
+  void onTempTypeChange(String data) {}
+
+  @override
+  Widget build(BuildContext context) {
+    return new SettingRow(
+      rowData: SettingsDropDownConfig(
+          title: 'Temperature type',
+          initialKey: _tempType,
+          choices: {
+            '°': '°C',
+            '°F': '°F',
+          }),
+      onSettingDataRowChange: onTempTypeChange,
+      config: const SettingsRowConfiguration(
+          showAsTextField: false,
+          showTitleLeft: true,
+          showAsSingleSetting: false),
+    );
+  }
+}
+
+class SettingsSlider extends StatelessWidget {
+  final String sliderTitle;
+  final String sliderUnit;
+  final double sliderStartValue;
+  final double sliderEndValue;
+  final double sliderInitialValue;
+  final updateValue;
+
+  const SettingsSlider(this.sliderTitle, this.sliderUnit, this.sliderStartValue,
+      this.sliderEndValue, this.sliderInitialValue, this.updateValue);
+
+  @override
+  Widget build(BuildContext context) {
+    return new SettingRow(
+      rowData: SettingsSliderConfig(
+        title: sliderTitle,
+        from: sliderStartValue,
+        to: sliderEndValue,
+        initialValue: sliderInitialValue,
+        justIntValues: true,
+        unit: sliderUnit,
+      ),
+      onSettingDataRowChange: updateValue,
+      config: SettingsRowConfiguration(
+          showAsTextField: false,
+          showTitleLeft: true,
+          showTopTitle: false,
+          showAsSingleSetting: false),
     );
   }
 }
