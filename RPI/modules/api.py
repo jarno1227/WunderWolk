@@ -1,11 +1,14 @@
 import requests
 from abc import ABC, abstractmethod
+import datetime
+import json
 
 
 class Api(ABC):
-    def __init__(self, key, settings):
+    def __init__(self, key, settings, base_url):
         self._api_key = key
         self._settings = settings
+        self._base_url = base_url
 
     @property
     def api_key(self):
@@ -23,6 +26,14 @@ class Api(ABC):
     def settings(self, value):
         self._settings = value
 
+    @property
+    def base_url(self):
+        return self._base_url
+
+    @base_url.setter
+    def base_url(self, value):
+        self._base_url = value
+
     @abstractmethod
     def fetch_data(self):
         pass
@@ -30,25 +41,39 @@ class Api(ABC):
 
 class SocialConnect(Api):
     def __init__(self, key, settings):
-        super().__init__(key, settings)
+        super(SocialConnect, self).__init__(key, settings, 'https://api.social-searcher.com/v2/')
 
     def fetch_data(self):
-        pass
+        search_type = 'search?'
+        subject_counter = 0
+        subject_count = len(self.settings.subjects)
+        query = ''
+        for subject in self.settings.subjects:
+            query += subject
+            if subject_counter < subject_count:
+                query += 'OR'
+            subject_counter += 1
+        payload = {'key': self.api_key, 'q': query, 'network': 'web'}
+        url = self.base_url + search_type
+        r = requests.get(url, params=payload).text
+        content_obj = json.loads(r)
+        for post in content_obj['posts']:
+            print(post['sentiment'])
 
 
 class WeatherConnect(Api):
     def __init__(self, key, settings):
-        super(WeatherConnect, self).__init__(key, settings)
-        self.baseUrl = "https://api.openweathermap.org/data/2.5/onecall?"
-        self.coordinates = "lat=" + str(settings.location[0]) + "&lon=" + str(settings.location[1])
-        self.exclusions = "exclude=" + "current,minutely,daily"  # + ",hourly"
+        super(WeatherConnect, self).__init__(key, settings, 'https://api.openweathermap.org/data/2.5/')
+        location = self.settings.location
+        self.coordinates = "lat=" + str(location[0]) + "&lon=" + str(location[1])
+        self.exclusions = "exclude=" + "current,minutely,daily"
         self.units = "units=" + "metric"
         self.app_id = "appid=" + self.api_key
         self._complete_url = ""
         self.update_url()
 
     def update_url(self):
-        self._complete_url = self.baseUrl + self.coordinates + "&" + self.exclusions + "&" \
+        self._complete_url = self.base_url + "onecall?" + self.coordinates + "&" + self.exclusions + "&" \
                              + self.units + "&" + self.app_id
 
     @property
@@ -59,6 +84,14 @@ class WeatherConnect(Api):
     def complete_url(self, value):
         self._complete_url = value
 
-    def fetch_data(self):
+    def fetch_hourly_2_days(self):
         r = requests.get(self._complete_url)
-        print(r.content)
+        content_string = r.text
+        content_obj = json.loads(content_string)
+        for hour in content_obj['hourly']:
+            print(datetime.datetime.utcfromtimestamp(hour['dt']))
+
+        return content_obj['hourly']
+
+    def fetch_data(self):
+        pass

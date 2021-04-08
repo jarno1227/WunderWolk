@@ -1,0 +1,1 @@
+{"mode": "weather", "refresh_interval": 5, "future_forecast_time": 30, "brightness": 20, "subjects": ["test1", "test2"], "location": {"latitude": 51.57046107093778, "longitude": 5.050113150625251}}
