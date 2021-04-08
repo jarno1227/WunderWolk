@@ -8,6 +8,6 @@ class Program:
         # self.API = Api()
         self.SocialConnect = SocialConnect("bddae9b9df86095e0d4b9908a7a9b622", settings=self.settings)
         self.WeatherConnect = WeatherConnect("f71af11b8e02b30c2ed988487f0dd533", settings=self.settings)
-        self.WeatherConnect.fetch_hourly()
-        # self.SocialConnect.fetch_data()
+        # self.WeatherConnect.fetch_hourly()
+        self.SocialConnect.fetch_data()
         # self.MQTT = MQTT()
