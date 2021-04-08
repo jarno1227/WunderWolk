@@ -64,7 +64,8 @@ class SocialConnect(Api):
 class WeatherConnect(Api):
     def __init__(self, key, settings):
         super(WeatherConnect, self).__init__(key, settings, 'https://api.openweathermap.org/data/2.5/')
-        self.coordinates = "lat=" + str(settings.location[0]) + "&lon=" + str(settings.location[1])
+        location = self.settings.location
+        self.coordinates = "lat=" + str(location[0]) + "&lon=" + str(location[1])
         self.exclusions = "exclude=" + "current,minutely,daily"
         self.units = "units=" + "metric"
         self.app_id = "appid=" + self.api_key
@@ -83,14 +84,14 @@ class WeatherConnect(Api):
     def complete_url(self, value):
         self._complete_url = value
 
-    def fetch_hourly(self):
+    def fetch_hourly_2_days(self):
         r = requests.get(self._complete_url)
         content_string = r.text
         content_obj = json.loads(content_string)
         for hour in content_obj['hourly']:
             print(datetime.datetime.utcfromtimestamp(hour['dt']))
 
-        return content_obj
+        return content_obj['hourly']
 
     def fetch_data(self):
         pass
