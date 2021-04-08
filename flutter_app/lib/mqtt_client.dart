@@ -4,7 +4,7 @@ import 'dart:io';
 
 Future<MqttClient> connect() async {
   MqttServerClient client =
-      MqttServerClient.withPort('broker.address', 'flutter_app', 1883);
+      MqttServerClient.withPort('maqiatto.com', 'flutter_app', 1883);
   client.logging(on: true);
   client.onConnected = onConnected;
   client.onDisconnected = onDisconnected;
@@ -15,7 +15,7 @@ Future<MqttClient> connect() async {
 
   final connMess = MqttConnectMessage()
       .withClientIdentifier("flutter_app")
-      .authenticateAs("username", "password")
+      .authenticateAs("pacotinie@gmail.com", "Bepperking!")
       .keepAliveFor(60)
       .withWillTopic('willtopic')
       .withWillMessage('My Will message')

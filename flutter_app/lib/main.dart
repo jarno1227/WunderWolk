@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter_app/mqtt_client.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:cupertino_setting_control/cupertino_setting_control.dart';
+import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,7 +49,14 @@ class _WunderWolkModes extends State<WunderWolkModes> {
   }
 
   final controller = PageController(initialPage: 0);
-  double _brightnessValue = 0;
+  double _brightnessValue = 100;
+  double _forecastTimeValue = 1;
+
+  updateForecastTime(double data) {
+    setState(() {
+      _forecastTimeValue = data;
+    });
+  }
 
   updateBrightness(double data) {
     setState(() {
@@ -81,8 +88,8 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                 TitleSection('Weather Mode', 42),
                 TitleSection('🌥', 200),
                 Spacer(),
-                SettingsSlider('Weather forecast time', ' minutes', 10, 60, 30,
-                    updateBrightness),
+                SettingsSlider('Weather forecast time', ' hour(s)', 1, 24,
+                    _forecastTimeValue, updateForecastTime),
                 TestDropdown(),
                 Container(
                   margin: EdgeInsets.only(bottom: 50),
@@ -99,6 +106,7 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                 TitleSection('Mood Mode', 42),
                 TitleSection('😄', 200),
                 Spacer(),
+                SubjectButton(),
                 Container(
                   margin: EdgeInsets.only(bottom: 50),
                   child: SettingsSlider('Brightness', '%', 10, 100,
@@ -196,6 +204,90 @@ class SettingsSlider extends StatelessWidget {
           showTitleLeft: true,
           showTopTitle: false,
           showAsSingleSetting: false),
+    );
+  }
+}
+
+class SubjectButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new SettingRow(
+      rowData: SettingsButtonConfig(
+        title: 'Manage topic',
+        tick: true,
+        functionToCall: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ManageTopicsPage()),
+          );
+        },
+      ),
+      config: const SettingsRowConfiguration(
+          showAsTextField: false,
+          showTitleLeft: true,
+          showTopTitle: false,
+          showAsSingleSetting: false),
+    );
+  }
+}
+
+class ManageTopicsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Manage topics"),
+      ),
+      body: Center(
+        child: SubjectList(),
+      ),
+    );
+  }
+}
+
+class SubjectList extends StatefulWidget {
+  @override
+  _SubjectList createState() => _SubjectList();
+}
+
+class _SubjectList extends State<SubjectList> {
+  final List<String> entries = <String>[
+    'Max Verstappen',
+    'Red Bull',
+    'Formula 1',
+    'Bahrain'
+  ];
+
+  void updateEntries(int index) {
+    entries.removeAt(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: entries.length,
+      itemBuilder: (BuildContext context, int index) {
+        return SwipeActionCell(
+          key: ObjectKey(entries[index]),
+
+          ///this key is necessary
+          trailingActions: <SwipeAction>[
+            SwipeAction(
+                title: "delete",
+                onTap: (CompletionHandler handler) async {
+                  updateEntries(index);
+                  setState(() {});
+                },
+                color: Colors.red),
+          ],
+          child: Container(
+            height: 50,
+            child: Center(child: Text('${entries[index]}')),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }
