@@ -52,7 +52,7 @@ class Program:
                     self.MQTT.send_message("pacotinie@gmail.com/app", json.dumps(getattr(self.settings, value)))
 
             elif msg_type == "settings":  # save all settings at once
-                value = value.replace("'", '"')
+                value = value.replace("'", '"')  # single quotes to double for json parser
                 self.settings.save_settings_json(json.loads(value))
             else:  # save specific setting
                 if hasattr(self.settings, msg_type):

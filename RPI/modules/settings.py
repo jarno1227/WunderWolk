@@ -85,7 +85,8 @@ class Settings:
     def future_forecast_time(self, value):
         try:
             value = int(value)
-            self._future_forecast_time = value
+            if value <= 48:  # 48 is the max hours in the future from 8am in the morning you can request
+                self._future_forecast_time = value
         except ValueError:
             value + " is not a correct integer"
 
@@ -97,7 +98,8 @@ class Settings:
     def brightness(self, value):
         try:
             value = int(value)
-            self._brightness = value
+            if 0 <= value <= 100:
+                self._brightness = value
         except ValueError:
             value + " is not a correct integer"
 
