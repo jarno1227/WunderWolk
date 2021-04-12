@@ -1,2 +1,2 @@
-from modules.program import Program
-program = Program()
+from modules.program import run_program
+run_program()
