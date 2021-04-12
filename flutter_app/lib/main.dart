@@ -209,6 +209,8 @@ class SettingsSlider extends StatelessWidget {
 }
 
 class SubjectButton extends StatelessWidget {
+  List<String> entries = ['Max Verstappen', 'Red Bull', 'Formula 1', 'Bahrain'];
+
   @override
   Widget build(BuildContext context) {
     return new SettingRow(
@@ -218,7 +220,7 @@ class SubjectButton extends StatelessWidget {
         functionToCall: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ManageTopicsPage()),
+            MaterialPageRoute(builder: (context) => ManageTopicsPage(entries)),
           );
         },
       ),
@@ -231,7 +233,27 @@ class SubjectButton extends StatelessWidget {
   }
 }
 
-class ManageTopicsPage extends StatelessWidget {
+class ManageTopicsPage extends StatefulWidget {
+  final List<String> entries;
+  final newTopicTextController = TextEditingController();
+
+  ManageTopicsPage(this.entries);
+
+  @override
+  _ManageTopicsPage createState() => _ManageTopicsPage();
+}
+
+class _ManageTopicsPage extends State<ManageTopicsPage> {
+  updateEntries(int index) {
+    widget.entries.removeAt(index);
+    setState(() {});
+  }
+
+  void addNewEntry(String entry) {
+    widget.entries.add(entry);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,51 +261,96 @@ class ManageTopicsPage extends StatelessWidget {
         title: Text("Manage topics"),
       ),
       body: Center(
-        child: SubjectList(),
-      ),
+          child: Column(
+        children: [
+          Container(
+              height: 350, child: SubjectList(widget.entries, updateEntries)),
+          if (widget.entries.length < 5)
+            CupertinoButton(
+              child: Text('Add topic'),
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                        title: Text('Add topic'),
+                        content: Card(
+                          elevation: 0.0,
+                          child: Column(
+                            children: <Widget>[
+                              CupertinoTextField(
+                                controller: widget.newTopicTextController,
+                                placeholder: 'Topic you are interested in',
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          CupertinoDialogAction(
+                            isDefaultAction: true,
+                            child: Text("Cancel"),
+                            onPressed: () {
+                              //close the dialog
+                              Navigator.pop(context);
+                              //empty the textfield
+                              widget.newTopicTextController.text = "";
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: Text("Add"),
+                            onPressed: () {
+                              //update the list state
+                              addNewEntry(widget.newTopicTextController.text);
+                              //close the dialog
+                              Navigator.pop(context);
+                              //empty the textfield
+                              widget.newTopicTextController.text = "";
+                            },
+                          )
+                        ]);
+                  },
+                );
+              },
+            )
+        ],
+      )),
     );
   }
 }
 
 class SubjectList extends StatefulWidget {
+  final List<String> entries;
+  final updateEntries;
+
+  SubjectList(this.entries, this.updateEntries);
+
   @override
   _SubjectList createState() => _SubjectList();
 }
 
 class _SubjectList extends State<SubjectList> {
-  final List<String> entries = <String>[
-    'Max Verstappen',
-    'Red Bull',
-    'Formula 1',
-    'Bahrain'
-  ];
-
-  void updateEntries(int index) {
-    entries.removeAt(index);
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.all(8),
-      itemCount: entries.length,
+      itemCount: widget.entries.length,
       itemBuilder: (BuildContext context, int index) {
         return SwipeActionCell(
-          key: ObjectKey(entries[index]),
+          key: ObjectKey(widget.entries[index]),
 
           ///this key is necessary
           trailingActions: <SwipeAction>[
             SwipeAction(
                 title: "delete",
                 onTap: (CompletionHandler handler) async {
-                  updateEntries(index);
+                  widget.updateEntries(index);
                   setState(() {});
                 },
                 color: Colors.red),
           ],
           child: Container(
             height: 50,
-            child: Center(child: Text('${entries[index]}')),
+            child: Center(child: Text('${widget.entries[index]}')),
           ),
         );
       },
