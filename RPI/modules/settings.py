@@ -2,16 +2,15 @@ import json
 
 
 class Settings:
-    available_modes = [
-        "weather",
-        "social"
-    ]
-
     # todo: if parameter is empty retrieve data from settingsfile
     def __init__(self):
         # if subjects is None:
         #     # todo: better system to dynamically add the quotations in the fetch commands
         #     subjects = ['"mark rutte"', '"pieter omtzigt"']
+        self.available_modes = [
+            "weather",
+            "social"
+        ]
         self._mode = "weather"
         self._refresh_interval = -1
         self._future_forecast_time = -1
@@ -33,7 +32,6 @@ class Settings:
             for subject in data['subjects']:
                 self.subjects.append(subject)
         self.location = [data['location']['latitude'], data['location']['longitude']]
-        print(vars(self))
 
     def load_from_file(self):
         with open(self.settings_path) as json_file:
@@ -62,7 +60,10 @@ class Settings:
 
     @mode.setter
     def mode(self, value):
-        self._mode = value
+        if value in self.available_modes:
+            self._mode = value
+        else:
+            print("mode does not exist")
 
     @property
     def refresh_interval(self):
@@ -70,7 +71,11 @@ class Settings:
 
     @refresh_interval.setter
     def refresh_interval(self, value):
-        self._refresh_interval = value
+        try:
+            value = int(value)
+            self._refresh_interval = value
+        except ValueError:
+            value + " is not a correct integer"
 
     @property
     def future_forecast_time(self):
@@ -78,7 +83,11 @@ class Settings:
 
     @future_forecast_time.setter
     def future_forecast_time(self, value):
-        self._future_forecast_time = value
+        try:
+            value = int(value)
+            self._future_forecast_time = value
+        except ValueError:
+            value + " is not a correct integer"
 
     @property
     def brightness(self):
@@ -86,7 +95,11 @@ class Settings:
 
     @brightness.setter
     def brightness(self, value):
-        self._brightness = value
+        try:
+            value = int(value)
+            self._brightness = value
+        except ValueError:
+            value + " is not a correct integer"
 
     @property
     def subjects(self):
@@ -94,6 +107,9 @@ class Settings:
 
     @subjects.setter
     def subjects(self, value):
+        # strings with formatting "value1,value2,...,value5"
+        if type(value) is str:
+            value = value.split(",")
         self._subjects = value
 
     @property
@@ -102,4 +118,7 @@ class Settings:
 
     @location.setter
     def location(self, value):
+        # strings with formatting "longitude,latitude"
+        if type(value) is str:
+            value = value.split(",")
         self._location = value

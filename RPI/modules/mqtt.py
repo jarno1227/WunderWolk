@@ -14,17 +14,20 @@ class MQTT:
         self.mqttc.loop_start()
 
     def on_connect(self, mqttc, obj, flags, rc):
-        print("rc: " + str(rc))
+        pass
+        # print("rc: " + str(rc))
 
     def on_message(self, client, userdata, msg):
         message = str(msg.payload.decode("utf-8"))
         self.messages.append(message)
 
     def on_publish(self, mqttc, obj, mid):
-        print("mid: " + str(mid))
+        pass
+        # print("mid: " + str(mid))
 
     def on_subscribe(self, mqttc, obj, mid, granted_qos):
-        print("Subscribed: " + str(mid) + " " + str(granted_qos))
+        pass
+        # print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
     def on_log(self, mqttc, obj, level, string):
         print(string)
