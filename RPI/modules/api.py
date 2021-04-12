@@ -43,6 +43,23 @@ class SocialConnect(Api):
     def __init__(self, key, settings):
         super(SocialConnect, self).__init__(key, settings, 'https://api.social-searcher.com/v2/')
 
+    def calc_avg_sentiment(self, posts_obj):
+        negatives, positives, neutrals = 0, 0, 0
+        for post in posts_obj['posts']:
+            if post['sentiment'] == "negative":
+                negatives += 1
+            elif post['sentiment'] == "positive":
+                positives += 1
+            elif post['sentiment'] == "neutral":
+                neutrals += 1
+        total = negatives + positives + neutrals
+        negatives_percentage = negatives / total * 100
+        positives_percentage = positives / total * 100
+        neutrals_percentage = neutrals / total * 100
+        rating = [negatives_percentage, positives_percentage, neutrals_percentage]
+        return rating
+
+
     def fetch_data(self):
         search_type = 'search?'
         subject_counter = 0
@@ -56,9 +73,8 @@ class SocialConnect(Api):
         payload = {'key': self.api_key, 'q': query, 'network': 'web'}
         url = self.base_url + search_type
         r = requests.get(url, params=payload).text
-        content_obj = json.loads(r)
-        for post in content_obj['posts']:
-            print(post['sentiment'])
+        posts_obj = json.loads(r)
+        return posts_obj
 
 
 class WeatherConnect(Api):
