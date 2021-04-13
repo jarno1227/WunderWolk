@@ -40,17 +40,28 @@ class WunderWolkModes extends StatefulWidget {
 
 class _WunderWolkModes extends State<WunderWolkModes> {
   MqttClient client;
-  var topic = "topic/test";
+  var mqttTopicPublish = "pacotinie@gmail.com/rpi";
+  var mqttTopicSubscribe = "pacotinie@gmail.com/app";
 
   void _publish(String message) {
     final builder = MqttClientPayloadBuilder();
-    builder.addString('Hello from flutter_client');
-    client?.publishMessage(topic, MqttQos.atLeastOnce, builder.payload);
+    builder.addString(message);
+    client?.publishMessage(
+        mqttTopicPublish, MqttQos.atLeastOnce, builder.payload);
+  }
+
+  void init() async {
+    await connect().then((value) {
+      client = value;
+    });
+    client?.subscribe(mqttTopicSubscribe, MqttQos.atLeastOnce);
+    _publish('request|settings');
   }
 
   final controller = PageController(initialPage: 0);
   double _brightnessValue = 100;
   double _forecastTimeValue = 1;
+  List<String> topics = ['Max Verstappen', 'Red Bull', 'Formula 1', 'Bahrain'];
 
   updateForecastTime(double data) {
     setState(() {
@@ -66,6 +77,7 @@ class _WunderWolkModes extends State<WunderWolkModes> {
 
   @override
   Widget build(BuildContext context) {
+    init();
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -106,7 +118,7 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                 TitleSection('Mood Mode', 42),
                 TitleSection('😄', 200),
                 Spacer(),
-                SubjectButton(),
+                SubjectButton(topics),
                 Container(
                   margin: EdgeInsets.only(bottom: 50),
                   child: SettingsSlider('Brightness', '%', 10, 100,
@@ -209,7 +221,9 @@ class SettingsSlider extends StatelessWidget {
 }
 
 class SubjectButton extends StatelessWidget {
-  List<String> entries = ['Max Verstappen', 'Red Bull', 'Formula 1', 'Bahrain'];
+  final List<String> topics;
+
+  const SubjectButton(this.topics);
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +234,7 @@ class SubjectButton extends StatelessWidget {
         functionToCall: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ManageTopicsPage(entries)),
+            MaterialPageRoute(builder: (context) => ManageTopicsPage(topics)),
           );
         },
       ),
@@ -234,10 +248,10 @@ class SubjectButton extends StatelessWidget {
 }
 
 class ManageTopicsPage extends StatefulWidget {
-  final List<String> entries;
+  final List<String> topics;
   final newTopicTextController = TextEditingController();
 
-  ManageTopicsPage(this.entries);
+  ManageTopicsPage(this.topics);
 
   @override
   _ManageTopicsPage createState() => _ManageTopicsPage();
@@ -245,12 +259,12 @@ class ManageTopicsPage extends StatefulWidget {
 
 class _ManageTopicsPage extends State<ManageTopicsPage> {
   updateEntries(int index) {
-    widget.entries.removeAt(index);
+    widget.topics.removeAt(index);
     setState(() {});
   }
 
   void addNewEntry(String entry) {
-    widget.entries.add(entry);
+    widget.topics.add(entry);
     setState(() {});
   }
 
@@ -264,8 +278,8 @@ class _ManageTopicsPage extends State<ManageTopicsPage> {
           child: Column(
         children: [
           Container(
-              height: 350, child: SubjectList(widget.entries, updateEntries)),
-          if (widget.entries.length < 5)
+              height: 350, child: SubjectList(widget.topics, updateEntries)),
+          if (widget.topics.length < 5)
             CupertinoButton(
               child: Text('Add topic'),
               onPressed: () {
@@ -319,10 +333,10 @@ class _ManageTopicsPage extends State<ManageTopicsPage> {
 }
 
 class SubjectList extends StatefulWidget {
-  final List<String> entries;
+  final List<String> topics;
   final updateEntries;
 
-  SubjectList(this.entries, this.updateEntries);
+  SubjectList(this.topics, this.updateEntries);
 
   @override
   _SubjectList createState() => _SubjectList();
@@ -333,10 +347,10 @@ class _SubjectList extends State<SubjectList> {
   Widget build(BuildContext context) {
     return ListView.separated(
       padding: const EdgeInsets.all(8),
-      itemCount: widget.entries.length,
+      itemCount: widget.topics.length,
       itemBuilder: (BuildContext context, int index) {
         return SwipeActionCell(
-          key: ObjectKey(widget.entries[index]),
+          key: ObjectKey(widget.topics[index]),
 
           ///this key is necessary
           trailingActions: <SwipeAction>[
@@ -350,7 +364,7 @@ class _SubjectList extends State<SubjectList> {
           ],
           child: Container(
             height: 50,
-            child: Center(child: Text('${widget.entries[index]}')),
+            child: Center(child: Text('${widget.topics[index]}')),
           ),
         );
       },
