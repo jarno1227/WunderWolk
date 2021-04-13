@@ -16,7 +16,7 @@ class Settings:
         self._future_forecast_time = -1
         self._brightness = 100
         self._subjects = []
-        self._location = [0, 0]
+        self._location = [51.57046107093778, 5.050113150625251]
         self.settings_path = "C:\projects\WunderWolk\RPI\modules\data.txt"
         # setup
         # self.save_to_file()
@@ -40,12 +40,10 @@ class Settings:
 
     def save_to_file(self):
         current_settings = self.to_json()
-        # data = {"mode": "weather", "refresh_interval": 5, "future_forecast_time": 30, "brightness": 100,
-        #         "subjects": ["test1", "test2"],
-        #         "location": {"latitude": 51.57046107093778, "longitude": 5.050113150625251}}
-
         with open(self.settings_path, "w") as json_file:
             json.dump(current_settings, json_file)
+            return "saved"
+        return "failure"
 
     def to_json(self):
         settings_json = {"mode": self.mode, "refresh_interval": self.refresh_interval,
@@ -67,10 +65,14 @@ class Settings:
 
     @property
     def refresh_interval(self):
+        if self.mode == "weather":
+            return self._refresh_interval * 60  # weather is lookable per hour
+
         return self._refresh_interval
 
     @refresh_interval.setter
     def refresh_interval(self, value):
+        # todo: refresh scheduler interval
         try:
             value = int(value)
             self._refresh_interval = value
