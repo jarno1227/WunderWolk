@@ -136,7 +136,7 @@ class _WunderWolkModes extends State<WunderWolkModes> {
                 TitleSection('Mood Mode', 42),
                 TitleSection('😄', 200),
                 Spacer(),
-                SubjectButton(topics),
+                SubjectButton(topics, widget._publish),
                 Container(
                   margin: EdgeInsets.only(bottom: 50),
                   child: SettingsSlider('Brightness', '%', 10, 100,
@@ -240,8 +240,9 @@ class SettingsSlider extends StatelessWidget {
 
 class SubjectButton extends StatelessWidget {
   final List<String> topics;
+  final _publish;
 
-  const SubjectButton(this.topics);
+  const SubjectButton(this.topics, this._publish);
 
   @override
   Widget build(BuildContext context) {
@@ -252,7 +253,8 @@ class SubjectButton extends StatelessWidget {
         functionToCall: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ManageTopicsPage(topics)),
+            MaterialPageRoute(
+                builder: (context) => ManageTopicsPage(topics, _publish)),
           );
         },
       ),
@@ -268,22 +270,37 @@ class SubjectButton extends StatelessWidget {
 class ManageTopicsPage extends StatefulWidget {
   final List<String> topics;
   final newTopicTextController = TextEditingController();
+  final _publish;
 
-  ManageTopicsPage(this.topics);
+  ManageTopicsPage(this.topics, this._publish);
 
   @override
   _ManageTopicsPage createState() => _ManageTopicsPage();
 }
 
 class _ManageTopicsPage extends State<ManageTopicsPage> {
-  updateEntries(int index) {
+  void publishTopics() {
+    String topicString = "";
+    widget.topics.forEach((topic) {
+      if (widget.topics.length - 1 != widget.topics.indexOf(topic)) {
+        topicString += topic + ",";
+      } else {
+        topicString += topic;
+      }
+    });
+    widget._publish("subjects|" + topicString);
+  }
+
+  void updateEntries(int index) {
     widget.topics.removeAt(index);
     setState(() {});
+    publishTopics();
   }
 
   void addNewEntry(String entry) {
-    widget.topics.add(entry);
+    widget.topics.add(entry.replaceAll(RegExp(","), ""));
     setState(() {});
+    publishTopics();
   }
 
   @override
