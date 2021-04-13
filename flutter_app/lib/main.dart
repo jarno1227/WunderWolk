@@ -6,10 +6,37 @@ import 'package:cupertino_setting_control/cupertino_setting_control.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
 
 void main() {
-  runApp(MyApp());
+  MqttClient client;
+  String mqttTopicPublish = "pacotinie@gmail.com/rpi";
+  String mqttTopicSubscribe = "pacotinie@gmail.com/app";
+
+  void _publish(String message) {
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(message);
+    client?.publishMessage(
+        mqttTopicPublish, MqttQos.atLeastOnce, builder.payload);
+  }
+
+  void init() async {
+    await connect().then((value) {
+      client = value;
+    });
+    client?.subscribe(mqttTopicSubscribe, MqttQos.atLeastOnce);
+    _publish('request|settings');
+  }
+
+  init();
+  runApp(MyApp(client, mqttTopicPublish, mqttTopicSubscribe, _publish));
 }
 
 class MyApp extends StatelessWidget {
+  final MqttClient client;
+  final String mqttTopicPublish;
+  final String mqttTopicSubscribe;
+  final _publish;
+
+  const MyApp(this.client, this.mqttTopicPublish, this.mqttTopicSubscribe,
+      this._publish);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,36 +55,26 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xff1B4060),
         primarySwatch: Colors.indigo,
       ),
-      home: WunderWolkModes(),
+      home: WunderWolkModes(
+          client, mqttTopicPublish, mqttTopicSubscribe, _publish),
     );
   }
 }
 
 class WunderWolkModes extends StatefulWidget {
+  final MqttClient client;
+  final String mqttTopicPublish;
+  final String mqttTopicSubscribe;
+  final _publish;
+
+  const WunderWolkModes(this.client, this.mqttTopicPublish,
+      this.mqttTopicSubscribe, this._publish);
+
   @override
   _WunderWolkModes createState() => _WunderWolkModes();
 }
 
 class _WunderWolkModes extends State<WunderWolkModes> {
-  MqttClient client;
-  var mqttTopicPublish = "pacotinie@gmail.com/rpi";
-  var mqttTopicSubscribe = "pacotinie@gmail.com/app";
-
-  void _publish(String message) {
-    final builder = MqttClientPayloadBuilder();
-    builder.addString(message);
-    client?.publishMessage(
-        mqttTopicPublish, MqttQos.atLeastOnce, builder.payload);
-  }
-
-  void init() async {
-    await connect().then((value) {
-      client = value;
-    });
-    client?.subscribe(mqttTopicSubscribe, MqttQos.atLeastOnce);
-    _publish('request|settings');
-  }
-
   final controller = PageController(initialPage: 0);
   double _brightnessValue = 100;
   double _forecastTimeValue = 1;
@@ -66,18 +83,19 @@ class _WunderWolkModes extends State<WunderWolkModes> {
   updateForecastTime(double data) {
     setState(() {
       _forecastTimeValue = data;
+      widget._publish("future_forecast_time|" + (data.round()).toString());
     });
   }
 
   updateBrightness(double data) {
     setState(() {
       _brightnessValue = data;
+      widget._publish("brightness|" + (data.round()).toString());
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    init();
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -194,7 +212,7 @@ class SettingsSlider extends StatelessWidget {
   final double sliderStartValue;
   final double sliderEndValue;
   final double sliderInitialValue;
-  final updateValue;
+  final dynamic updateValue;
 
   const SettingsSlider(this.sliderTitle, this.sliderUnit, this.sliderStartValue,
       this.sliderEndValue, this.sliderInitialValue, this.updateValue);
