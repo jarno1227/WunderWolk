@@ -4,16 +4,16 @@ import json
 class Settings:
     # todo: if parameter is empty retrieve data from settingsfile
     def __init__(self):
-        # if subjects is None:
-        #     # todo: better system to dynamically add the quotations in the fetch commands
-        #     subjects = ['"mark rutte"', '"pieter omtzigt"']
+        #   todo: better system to dynamically add the quotations in the fetch commands
+        #       subjects = ['"mark rutte"', '"pieter omtzigt"']
         self.available_modes = [
             "weather",
             "social"
         ]
         self._mode = "weather"
-        self._refresh_interval = -1
-        self._future_forecast_time = -1
+        self._refresh_interval = 1
+        self._future_forecast_time = 1
+        self._max_future_forecast_time = 24
         self._brightness = 100
         self._subjects = []
         self._location = [51.57046107093778, 5.050113150625251]
@@ -46,7 +46,7 @@ class Settings:
         return "failure"
 
     def to_json(self):
-        settings_json = {"mode": self.mode, "refresh_interval": self.refresh_interval,
+        settings_json = {"mode": self.mode, "refresh_interval": self._refresh_interval,
                          "future_forecast_time": self.future_forecast_time, "brightness": self.brightness,
                          "subjects": self.subjects,
                          "location": {"latitude": self.location[0], "longitude": self.location[1]}}
@@ -66,7 +66,7 @@ class Settings:
     @property
     def refresh_interval(self):
         if self.mode == "weather":
-            return self._refresh_interval * 60  # weather is lookable per hour
+            return self._refresh_interval * 30  # weather is lookable per hour
 
         return self._refresh_interval
 
@@ -87,10 +87,13 @@ class Settings:
     def future_forecast_time(self, value):
         try:
             value = int(value)
-            if value <= 48:  # 48 is the max hours in the future from 8am in the morning you can request
-                self._future_forecast_time = value
+            self._future_forecast_time = value
         except ValueError:
             value + " is not a correct integer"
+
+    @property
+    def max_future_forecast_time(self):
+        return self._max_future_forecast_time
 
     @property
     def brightness(self):

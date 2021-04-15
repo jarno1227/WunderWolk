@@ -92,6 +92,7 @@ class WeatherConnect(Api):
         self._complete_url = self.base_url + "onecall?" + self.coordinates + "&" + self.exclusions + "&" \
                              + self.units + "&" + self.app_id
 
+
     @property
     def complete_url(self):
         return self._complete_url
@@ -104,9 +105,6 @@ class WeatherConnect(Api):
         r = requests.get(self._complete_url)
         content_string = r.text
         content_obj = json.loads(content_string)
-        for hour in content_obj['hourly']:
-            print(datetime.datetime.utcfromtimestamp(hour['dt']))
-
         return content_obj['hourly']
 
     def fetch_data(self):
