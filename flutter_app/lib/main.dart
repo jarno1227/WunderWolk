@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:flutter_app/mqtt_client.dart';
 import 'package:cupertino_setting_control/cupertino_setting_control.dart';
 import 'package:flutter_swipe_action_cell/flutter_swipe_action_cell.dart';
+import 'package:flutter_app/settings.dart';
 
 void main() {
   MqttClient client;
   String mqttTopicPublish = "pacotinie@gmail.com/rpi";
   String mqttTopicSubscribe = "pacotinie@gmail.com/app";
+  Settings settings;
 
   void _publish(String message) {
     final builder = MqttClientPayloadBuilder();
@@ -23,10 +27,21 @@ void main() {
     });
     client?.subscribe(mqttTopicSubscribe, MqttQos.atLeastOnce);
     _publish('request|settings');
+    client?.onSubscribed(mqttTopicSubscribe);
+
+    client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final MqttPublishMessage message = c[0].payload;
+      final payload =
+          MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      if (c[0].topic == mqttTopicSubscribe) {
+        settings = Settings.fromJson(jsonDecode(payload.replaceAll("'", '"')));
+      }
+      runApp(MyApp(
+          client, mqttTopicPublish, mqttTopicSubscribe, _publish, settings));
+    });
   }
 
   init();
-  runApp(MyApp(client, mqttTopicPublish, mqttTopicSubscribe, _publish));
 }
 
 class MyApp extends StatelessWidget {
@@ -34,9 +49,10 @@ class MyApp extends StatelessWidget {
   final String mqttTopicPublish;
   final String mqttTopicSubscribe;
   final _publish;
+  final Settings settings;
 
   const MyApp(this.client, this.mqttTopicPublish, this.mqttTopicSubscribe,
-      this._publish);
+      this._publish, this.settings);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -56,7 +72,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
       ),
       home: WunderWolkModes(
-          client, mqttTopicPublish, mqttTopicSubscribe, _publish),
+          client,
+          mqttTopicPublish,
+          mqttTopicSubscribe,
+          _publish,
+          settings,
+          PageController(initialPage: settings?.mode == "weather" ? 0 : 1)),
     );
   }
 }
@@ -66,16 +87,17 @@ class WunderWolkModes extends StatefulWidget {
   final String mqttTopicPublish;
   final String mqttTopicSubscribe;
   final _publish;
+  final Settings settings;
+  final controller;
 
   const WunderWolkModes(this.client, this.mqttTopicPublish,
-      this.mqttTopicSubscribe, this._publish);
+      this.mqttTopicSubscribe, this._publish, this.settings, this.controller);
 
   @override
   _WunderWolkModes createState() => _WunderWolkModes();
 }
 
 class _WunderWolkModes extends State<WunderWolkModes> {
-  final controller = PageController(initialPage: 0);
   double _brightnessValue = 100;
   double _forecastTimeValue = 1;
   List<String> topics = ['Max Verstappen', 'Red Bull', 'Formula 1', 'Bahrain'];
@@ -94,6 +116,15 @@ class _WunderWolkModes extends State<WunderWolkModes> {
     });
   }
 
+  //Set values first time the widget gets put in the tree.
+  @override
+  void initState() {
+    topics = widget.settings?.subjects;
+    _forecastTimeValue = widget.settings?.future_forecast_time?.toDouble();
+    _brightnessValue = widget.settings?.brightness?.toDouble();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +140,11 @@ class _WunderWolkModes extends State<WunderWolkModes> {
       body: Center(
           child: PageView(
         scrollDirection: Axis.horizontal,
-        controller: controller,
+        controller: widget.controller,
+        onPageChanged: (int page) {
+          String modeValue = page == 0 ? "weather" : "social";
+          widget._publish("mode|" + modeValue);
+        },
         children: [
           Center(
             child: Column(

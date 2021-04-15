@@ -5,7 +5,7 @@ import 'dart:io';
 Future<MqttClient> connect() async {
   MqttServerClient client =
       MqttServerClient.withPort('maqiatto.com', 'flutter_app', 1883);
-  client.logging(on: true);
+  client.logging(on: false);
   client.onConnected = onConnected;
   client.onDisconnected = onDisconnected;
   client.onUnsubscribed = onUnsubscribed;
