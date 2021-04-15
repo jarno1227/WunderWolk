@@ -6,7 +6,7 @@ class Settings {
   final int future_forecast_time;
   final int brightness;
   final List<String> subjects;
-  final List<Float> location;
+  final List<double> location;
 
   Settings(this.mode, this.refresh_interval, this.future_forecast_time,
       this.brightness, this.subjects, this.location);
@@ -16,8 +16,8 @@ class Settings {
         refresh_interval = json['refresh_interval'],
         future_forecast_time = json['future_forecast_time'],
         brightness = json['brightness'],
-        subjects = json['subjects'],
-        location = json['location'];
+        subjects = json['subjects'].cast<String>(),
+        location = [80.000, 5.050113150625251]; //json['location'];
 
   Map<String, dynamic> toJson() => {
         'mode': mode,
@@ -25,7 +25,7 @@ class Settings {
         'future_forecast_time': future_forecast_time,
         'brightness': brightness,
         'subjects': stringListToString(subjects),
-        'location': floatListToString(location)
+        'location': doubleListToString(location)
       };
 
   String stringListToString(List<String> list) {
@@ -40,7 +40,7 @@ class Settings {
     return stringOfList;
   }
 
-  String floatListToString(List<Float> list) {
+  String doubleListToString(List<double> list) {
     String stringOfList = "";
     list.forEach((item) {
       if (list.length - 1 != list.indexOf(item)) {
