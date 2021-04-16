@@ -15,15 +15,20 @@ def arduino_map(x, in_min, in_max, out_min, out_max):
 def change_interval_task(task_tag, interval=60):
     schedule.clear(task_tag)
     schedule.every(interval).minutes.do(refresh_api).tag(task_tag)
+    return interval
+
+
+def cancel_task(task_tag):
+    schedule.clear(task_tag)
 
 
 def refresh_api(program):
     if program.settings.mode == "weather":
-        program.handle_weather()
-    elif program.settings.mode == "social":
+        return program.handle_weather()
+    if program.settings.mode == "social":
         print("im very social")
-        # rating = program.get_current_social_rating()
-
+        rating = program.get_current_social_rating()
+        return rating
 
 def run_program():
     program = Program(Settings())
@@ -39,20 +44,21 @@ def run_program():
         time.sleep(0.1)
 
 
-def weather_parse(code):
-    if 300 > code >= 200:  # thunderstorm
+def weather_parse(hour_data):
+    weather_code = hour_data['weather'][0]['id']
+    if 300 > weather_code >= 200:  # thunderstorm
         pass
-    elif 400 > code >= 300:  # drizzle
+    elif 400 > weather_code >= 300:  # drizzle
         pass
-    elif 600 > code >= 500:  # rain
+    elif 600 > weather_code >= 500:  # rain
         pass
-    elif 700 > code > 600:  # snow
+    elif 700 > weather_code > 600:  # snow
         pass
-    elif 800 > code >= 700:  # atmosphere
+    elif 800 > weather_code >= 700:  # atmosphere
         pass
-    elif code == 800:  # clear sky
+    elif weather_code == 800:  # clear sky
         pass
-    elif 900 > code > 800:  # clouds
+    elif 900 > weather_code > 800:  # clouds
         pass
 
 
@@ -114,10 +120,7 @@ class Program:
                 now_with_future_forecast_time += datetime.timedelta(hours=1)
             for hour_of_estimation in self.hourly_weather:
                 hour_of_estimation_timezoned = datetime.datetime.fromtimestamp(hour_of_estimation['dt'], timezone)
-                weather_code = hour_of_estimation['weather'][0]['id']
-                print(weather_code)
-                # if hour_of_estimation_timezoned > now_with_future_forecast_time:
-                #     print(hour_of_estimation)
-                #     print(hour_of_estimation_timezoned)
-                #     return True
+                if hour_of_estimation_timezoned > now_with_future_forecast_time:
+                    weather_parse(hour_of_estimation)
+                    return True
             return False
