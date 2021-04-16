@@ -2,7 +2,6 @@ import json
 
 
 class Settings:
-    # todo: if parameter is empty retrieve data from settingsfile
     def __init__(self):
         #   todo: better system to dynamically add the quotations in the fetch commands
         #       subjects = ['"mark rutte"', '"pieter omtzigt"']
@@ -43,7 +42,6 @@ class Settings:
         with open(self.settings_path, "w") as json_file:
             json.dump(current_settings, json_file)
             return "saved"
-        return "failure"
 
     def to_json(self):
         settings_json = {"mode": self.mode, "refresh_interval": self._refresh_interval,
@@ -66,7 +64,7 @@ class Settings:
     @property
     def refresh_interval(self):
         if self.mode == "weather":
-            return self._refresh_interval * 30  # weather is lookable per hour
+            return self._refresh_interval * 30  # weather is updatable per hour
 
         return self._refresh_interval
 
@@ -77,7 +75,7 @@ class Settings:
             value = int(value)
             self._refresh_interval = value
         except ValueError:
-            value + " is not a correct integer"
+            print(value + " is not a correct integer")
 
     @property
     def future_forecast_time(self):
@@ -89,7 +87,7 @@ class Settings:
             value = int(value)
             self._future_forecast_time = value
         except ValueError:
-            value + " is not a correct integer"
+            print(value + " is not a correct integer")
 
     @property
     def max_future_forecast_time(self):
@@ -106,7 +104,7 @@ class Settings:
             if 0 <= value <= 100:
                 self._brightness = value
         except ValueError:
-            value + " is not a correct integer"
+            print(value + " is not a correct integer")
 
     @property
     def subjects(self):
@@ -116,16 +114,23 @@ class Settings:
     def subjects(self, value):
         # strings with formatting "value1,value2,...,value5"
         if type(value) is str:
-            value = value.split(",")
-        self._subjects = value
+            self._subjects = value.split(",")
+        elif type(value) is list:
+            self._subjects = value
+        else:
+            print("subject value is not correct")
 
     @property
     def location(self):
         return self._location
 
+
     @location.setter
     def location(self, value):
         # strings with formatting "longitude,latitude"
         if type(value) is str:
-            value = value.split(",")
-        self._location = value
+            self._location = value.split(",")
+        elif type(value) is list:
+            self._location = value
+        else:
+            print("location value is incorrect")

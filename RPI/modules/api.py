@@ -91,8 +91,6 @@ class WeatherConnect(Api):
     def update_url(self):
         self._complete_url = self.base_url + "onecall?" + self.coordinates + "&" + self.exclusions + "&" \
                              + self.units + "&" + self.app_id
-
-
     @property
     def complete_url(self):
         return self._complete_url

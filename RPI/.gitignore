@@ -1,5 +1,5 @@
 #jetbrains RPI
-.idea
+#.idea
 modules/data.txt
 
 # Byte-compiled / optimized / DLL files
