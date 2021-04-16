@@ -1,5 +1,5 @@
 import modules.settings as settings
-
+import pytest
 
 def test_edit_settings_properties():
     sett = settings.Settings()
@@ -24,6 +24,7 @@ def test_edit_settings_properties():
     sett.brightness = 50
     sett.brightness = 101
     sett.brightness = -1
+    sett.brightness = "test"
     assert sett.brightness == 50
     # subjects
     sett.subjects = "hoi,kaas,test"
@@ -39,7 +40,10 @@ def test_edit_settings_properties():
     assert sett.location == ['50.1', '100.2']
     sett.location = 5
     assert sett.location == ['50.1', '100.2']
-
+    # max_future_forecast_time
+    with pytest.raises(AttributeError):
+        sett.max_future_forecast_time = 5
+        assert sett.max_future_forecast_time == 24
 
 def test_save_load_settings():
     sett = settings.Settings()

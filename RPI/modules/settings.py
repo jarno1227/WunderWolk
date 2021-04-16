@@ -42,7 +42,6 @@ class Settings:
         with open(self.settings_path, "w") as json_file:
             json.dump(current_settings, json_file)
             return "saved"
-        return "failure"
 
     def to_json(self):
         settings_json = {"mode": self.mode, "refresh_interval": self._refresh_interval,
