@@ -60,6 +60,7 @@ def weather_parse(hour_data):
         pass
     elif 900 > weather_code > 800:  # clouds
         pass
+    return weather_code
 
 
 class Program:

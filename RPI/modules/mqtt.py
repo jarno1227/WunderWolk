@@ -34,7 +34,7 @@ class MQTT:
         print(string)
 
     def send_message(self, message):
-        self.mqttc.publish("pacotinie@gmail.com/app", message, qos=0, retain=False)
+        self.mqttc.publish(self.app_topic, message, qos=0, retain=False)
 
     def subscribe_topic(self, topic):
         self.mqttc.subscribe(topic, 0)
