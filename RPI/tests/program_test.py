@@ -20,10 +20,6 @@ def test_get_social_rating():
     assert len(prog.get_current_social_rating()) > 0
 
 
-# def test_create_program():
-#     program = prog.Program()
-
-
 def test_program_mqtt():
     prog.MQTT.subscribe_topic("pacotinie@gmail.com/app")
     prog.MQTT.send_message("test")

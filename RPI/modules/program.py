@@ -31,10 +31,11 @@ def cancel_task(task_tag):
 def refresh_api(program):
     if program.settings.mode == "weather":
         return program.handle_weather()
+    # todo: ipv program function gelijk weather_parse aanroepen
     if program.settings.mode == "social":
         print("im very social")
         rating = program.get_current_social_rating()
-        return rating
+        social_parse(rating)
 
 
 def run_program():
@@ -70,6 +71,20 @@ def weather_parse(hour_data):
     return weather_code
 
 
+def social_parse(rating):
+    pos_percentage = rating[0]
+    if pos_percentage <= 10:
+        pass
+    elif pos_percentage <= 30:
+        pass
+    elif pos_percentage <= 50:
+        pass
+    elif pos_percentage <= 60:
+        pass
+    elif pos_percentage > 60:
+        pass
+
+
 class Program:
     def __init__(self, settings):
         self.settings = settings
@@ -78,10 +93,6 @@ class Program:
         self.MQTT = MQTT("pacotinie@gmail.com", "Bepperking!")
         self.MQTT.subscribe_topic("pacotinie@gmail.com/rpi")
         self.hourly_weather = []
-
-    def get_current_social_rating(self):
-        posts_obj = self.SocialConnect.fetch_data()
-        return self.SocialConnect.calc_avg_sentiment(posts_obj)
 
     def check_messages(self):
         if len(self.MQTT.messages) > 0:
@@ -100,7 +111,7 @@ class Program:
                 elif hasattr(self.settings, value):
                     self.MQTT.send_message(getattr(self.settings, value))
 
-            elif msg_type == "settings":  # save all settings at once #todo: check json parsing
+            elif msg_type == "settings":  # save all settings at once
                 value = value.replace("'", '"')  # single quotes to double for json parser
                 try:
                     self.settings.save_settings_json(json.loads(value))
@@ -130,3 +141,7 @@ class Program:
                 if hour_of_estimation_timezoned > now_with_future_forecast_time:
                     return weather_parse(hour_of_estimation)
             return False
+
+    def get_current_social_rating(self):
+        posts_obj = self.SocialConnect.fetch_data()
+        return self.SocialConnect.calc_avg_sentiment(posts_obj)
