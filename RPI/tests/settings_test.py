@@ -1,6 +1,7 @@
 import modules.settings as settings
 import pytest
 
+
 def test_edit_settings_properties():
     sett = settings.Settings()
     # mode
@@ -44,6 +45,7 @@ def test_edit_settings_properties():
     with pytest.raises(AttributeError):
         sett.max_future_forecast_time = 5
         assert sett.max_future_forecast_time == 24
+
 
 def test_save_load_settings():
     sett = settings.Settings()

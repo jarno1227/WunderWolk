@@ -1,6 +1,5 @@
 import requests
 from abc import ABC, abstractmethod
-import datetime
 import json
 
 
@@ -52,13 +51,12 @@ class SocialConnect(Api):
                 positives += 1
             elif post['sentiment'] == "neutral":
                 neutrals += 1
-        total = negatives + positives + neutrals
+        total = negatives + positives  # + neutrals
         negatives_percentage = negatives / total * 100
         positives_percentage = positives / total * 100
-        neutrals_percentage = neutrals / total * 100
-        rating = [negatives_percentage, positives_percentage, neutrals_percentage]
+        # neutrals_percentage = neutrals / total * 100
+        rating = [positives_percentage, negatives_percentage]
         return rating
-
 
     def fetch_data(self):
         search_type = 'search?'
@@ -70,6 +68,7 @@ class SocialConnect(Api):
             if subject_counter < subject_count:
                 query += 'OR'
             subject_counter += 1
+            # todo: payload exact keywords worden gefiltered
         payload = {'key': self.api_key, 'q': query, 'network': 'web'}
         url = self.base_url + search_type
         r = requests.get(url, params=payload).text
@@ -91,6 +90,7 @@ class WeatherConnect(Api):
     def update_url(self):
         self._complete_url = self.base_url + "onecall?" + self.coordinates + "&" + self.exclusions + "&" \
                              + self.units + "&" + self.app_id
+
     @property
     def complete_url(self):
         return self._complete_url
