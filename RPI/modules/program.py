@@ -98,7 +98,7 @@ class Program:
                 if value == "settings":
                     self.MQTT.send_message(str(self.settings.to_json()))
                 elif hasattr(self.settings, value):
-                    self.MQTT.send_message(json.dumps(getattr(self.settings, value)))
+                    self.MQTT.send_message(getattr(self.settings, value))
 
             elif msg_type == "settings":  # save all settings at once #todo: check json parsing
                 value = value.replace("'", '"')  # single quotes to double for json parser

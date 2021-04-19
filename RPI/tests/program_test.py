@@ -29,6 +29,7 @@ def test_program_mqtt():
     prog.MQTT.send_message("test")
     time.sleep(1)  # sleep because sending the message takes time
     assert prog.MQTT.messages[0] == "test"
+    prog.MQTT.retrieve_message()
 
 
 def test_check_messages_program():
@@ -45,15 +46,16 @@ def test_process_messages():
     prog.settings.brightness = '50'
     # request
     prog.process_messages("request|settings")
+    time.sleep(1)
     msg = prog.MQTT.retrieve_message()
     #     todo: check if msg  json string
     prog.process_messages("request|mode")
+    time.sleep(1)
     msg = prog.MQTT.retrieve_message()
     assert msg == 'weather'
     # settings
-    # TODO: valid json
-    prog.process_messages("VALID JSON STRING setting mood to social")
-    assert prog.settings.mood == 'social'
+    prog.process_messages("settings|{'mode': 'social', 'refresh_interval': 5, 'future_forecast_time': 1, 'brightness': 50, 'subjects': ['max verstappen'], 'location': {'latitude': 51.57046107093778, 'longitude': 5.050113150625251}}")
+    assert prog.settings.mode == 'social'
     # save specific
     assert prog.settings.brightness == 50
     prog.process_messages("brightness|70")
