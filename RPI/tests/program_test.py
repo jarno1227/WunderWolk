@@ -15,6 +15,15 @@ def test_change_interval_task():
     program.cancel_task('test')
 
 
+def test_get_social_rating():
+    prog.settings.subjects = ['max verstappen']
+    assert len(prog.get_current_social_rating()) > 0
+
+
+# def test_create_program():
+#     program = prog.Program()
+
+
 def test_program_mqtt():
     prog.MQTT.subscribe_topic("pacotinie@gmail.com/app")
     prog.MQTT.send_message("test")
@@ -22,11 +31,36 @@ def test_program_mqtt():
     assert prog.MQTT.messages[0] == "test"
 
 
+def test_check_messages_program():
+    msg = prog.check_messages()
+    assert msg == None
+    prog.MQTT.messages.append("testvalue")
+    msg = prog.check_messages()
+    assert msg == "testvalue"
 
 
-def test_get_social_rating():
-    prog = program.Program(settings.Settings())
-    prog.settings.subjects = ['max verstappen']
-    assert len(prog.get_current_social_rating()) > 0
-# def test_create_program():
-#     program = prog.Program()
+def test_process_messages():
+    prog.MQTT.subscribe_topic("pacotinie@gmail.com/app")
+    prog.settings.mode = 'weather'
+    prog.settings.brightness = '50'
+    # request
+    prog.process_messages("request|settings")
+    msg = prog.MQTT.retrieve_message()
+    #     todo: check if msg  json string
+    prog.process_messages("request|mode")
+    msg = prog.MQTT.retrieve_message()
+    assert msg == 'weather'
+    # settings
+    # TODO: valid json
+    prog.process_messages("VALID JSON STRING setting mood to social")
+    assert prog.settings.mood == 'social'
+    # save specific
+    assert prog.settings.brightness == 50
+    prog.process_messages("brightness|70")
+    assert prog.settings.brightness == 70
+    # todo: msg_type mode or refresh_interval, check if change interval is changed
+
+
+def test_handle_weather():
+    assert prog.handle_weather() is not False
+    # todo: think how i display succes with weather handling

@@ -18,6 +18,12 @@ def change_interval_task(task_tag, interval=60):
     return interval
 
 
+def check_and_parse_message(program):
+    msg = program.check_messages()
+    if msg is not None:
+        program.process_messages(msg)
+
+
 def cancel_task(task_tag):
     schedule.clear(task_tag)
 
@@ -30,10 +36,11 @@ def refresh_api(program):
         rating = program.get_current_social_rating()
         return rating
 
+
 def run_program():
     program = Program(Settings())
     # print(vars(program.settings))
-    schedule.every(0.1).seconds.do(program.check_messages).tag('read-mqtt')
+    schedule.every(0.1).seconds.do(check_and_parse_message, program).tag('read-mqtt')
     program.settings.mode = 'weather'
     program.settings.future_forecast_time = 1
     schedule.every(program.settings.refresh_interval).minutes.do(refresh_api, program).tag('api-handling')
@@ -78,13 +85,12 @@ class Program:
 
     def check_messages(self):
         if len(self.MQTT.messages) > 0:
-            msg = self.MQTT.retrieve_message()
-            self.process_messages(msg)
+            return self.MQTT.retrieve_message()
+        return None
 
     def process_messages(self, msg):
         # mqtt message is constructed as -> type|value
-        delimiter = "|"
-        msg_split = msg.split(delimiter)
+        msg_split = msg.split("|")
         if len(msg_split) > 1:
             msg_type = msg_split[0]
             value = msg_split[1]
@@ -100,7 +106,7 @@ class Program:
                     self.settings.save_settings_json(json.loads(value))
                     self.settings.save_to_file()
                 except ValueError as e:
-                    self.MQTT.send_message("not a correct json")
+                    self.MQTT.send_message("invalid json")
 
             else:  # save specific setting
                 if hasattr(self.settings, msg_type):
@@ -122,6 +128,5 @@ class Program:
             for hour_of_estimation in self.hourly_weather:
                 hour_of_estimation_timezoned = datetime.datetime.fromtimestamp(hour_of_estimation['dt'], timezone)
                 if hour_of_estimation_timezoned > now_with_future_forecast_time:
-                    weather_parse(hour_of_estimation)
-                    return True
+                    return weather_parse(hour_of_estimation)
             return False
