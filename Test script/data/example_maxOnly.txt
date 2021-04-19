@@ -1,0 +1,14 @@
+Lap 1 time: Fri Apr 16 2021 18:22:10 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 32
+Negative: 7    
+
+Lap 2 time: Fri Apr 16 2021 18:23:15 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 15 
+Neutral: 29
+Negative: 6    
+
