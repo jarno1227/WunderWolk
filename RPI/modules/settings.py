@@ -124,7 +124,6 @@ class Settings:
     def location(self):
         return self._location
 
-
     @location.setter
     def location(self, value):
         # strings with formatting "longitude,latitude"

@@ -18,6 +18,12 @@ def change_interval_task(task_tag, interval=60):
     return interval
 
 
+def check_and_parse_message(program):
+    msg = program.check_messages()
+    if msg is not None:
+        program.process_messages(msg)
+
+
 def cancel_task(task_tag):
     schedule.clear(task_tag)
 
@@ -25,15 +31,17 @@ def cancel_task(task_tag):
 def refresh_api(program):
     if program.settings.mode == "weather":
         return program.handle_weather()
+    # todo: ipv program function gelijk weather_parse aanroepen
     if program.settings.mode == "social":
         print("im very social")
         rating = program.get_current_social_rating()
-        return rating
+        social_parse(rating)
+
 
 def run_program():
     program = Program(Settings())
     # print(vars(program.settings))
-    schedule.every(0.1).seconds.do(program.check_messages).tag('read-mqtt')
+    schedule.every(0.1).seconds.do(check_and_parse_message, program).tag('read-mqtt')
     program.settings.mode = 'weather'
     program.settings.future_forecast_time = 1
     schedule.every(program.settings.refresh_interval).minutes.do(refresh_api, program).tag('api-handling')
@@ -63,6 +71,20 @@ def weather_parse(hour_data):
     return weather_code
 
 
+def social_parse(rating):
+    pos_percentage = rating[0]
+    if pos_percentage <= 10:
+        pass
+    elif pos_percentage <= 30:
+        pass
+    elif pos_percentage <= 50:
+        pass
+    elif pos_percentage <= 60:
+        pass
+    elif pos_percentage > 60:
+        pass
+
+
 class Program:
     def __init__(self, settings):
         self.settings = settings
@@ -72,19 +94,14 @@ class Program:
         self.MQTT.subscribe_topic("pacotinie@gmail.com/rpi")
         self.hourly_weather = []
 
-    def get_current_social_rating(self):
-        posts_obj = self.SocialConnect.fetch_data()
-        return self.SocialConnect.calc_avg_sentiment(posts_obj)
-
     def check_messages(self):
         if len(self.MQTT.messages) > 0:
-            msg = self.MQTT.retrieve_message()
-            self.process_messages(msg)
+            return self.MQTT.retrieve_message()
+        return None
 
     def process_messages(self, msg):
         # mqtt message is constructed as -> type|value
-        delimiter = "|"
-        msg_split = msg.split(delimiter)
+        msg_split = msg.split("|")
         if len(msg_split) > 1:
             msg_type = msg_split[0]
             value = msg_split[1]
@@ -92,15 +109,15 @@ class Program:
                 if value == "settings":
                     self.MQTT.send_message(str(self.settings.to_json()))
                 elif hasattr(self.settings, value):
-                    self.MQTT.send_message(json.dumps(getattr(self.settings, value)))
+                    self.MQTT.send_message(getattr(self.settings, value))
 
-            elif msg_type == "settings":  # save all settings at once #todo: check json parsing
+            elif msg_type == "settings":  # save all settings at once
                 value = value.replace("'", '"')  # single quotes to double for json parser
                 try:
                     self.settings.save_settings_json(json.loads(value))
                     self.settings.save_to_file()
                 except ValueError as e:
-                    self.MQTT.send_message("not a correct json")
+                    self.MQTT.send_message("invalid json")
 
             else:  # save specific setting
                 if hasattr(self.settings, msg_type):
@@ -122,6 +139,9 @@ class Program:
             for hour_of_estimation in self.hourly_weather:
                 hour_of_estimation_timezoned = datetime.datetime.fromtimestamp(hour_of_estimation['dt'], timezone)
                 if hour_of_estimation_timezoned > now_with_future_forecast_time:
-                    weather_parse(hour_of_estimation)
-                    return True
+                    return weather_parse(hour_of_estimation)
             return False
+
+    def get_current_social_rating(self):
+        posts_obj = self.SocialConnect.fetch_data()
+        return self.SocialConnect.calc_avg_sentiment(posts_obj)
