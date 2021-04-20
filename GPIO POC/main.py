@@ -1,10 +1,10 @@
-from gpiozero import LED
+import RPi.GPIO as GPIO
 from time import sleep
-
-led = LED(4)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(12, GPIO.OUT)
 
 while True:
-    led.on()
+    GPIO.output(4, 1)
     sleep(1)
-    led.off()
+    GPIO.output(4, 0)
     sleep(1)
