@@ -16,7 +16,7 @@ class Settings:
         self._brightness = 100
         self._subjects = []
         self._location = [51.57046107093778, 5.050113150625251]
-        self.settings_path = "C:\projects\WunderWolk\RPI\modules\data.txt"
+        self.settings_path = 'C:\\projects\\WunderWolk\\RPI\\modules\\data.txt'
         # setup
         # self.save_to_file()
         self.load_from_file()

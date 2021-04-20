@@ -8,13 +8,12 @@ import schedule
 import json
 
 
-def arduino_map(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
-
-
-def change_interval_task(task_tag, interval=60):
+def change_interval_task(task_tag, interval=60, program=None):
+    print('new interval:', interval)
+    if program is None:
+        return print("Task scheduling has not been changed")
     schedule.clear(task_tag)
-    schedule.every(interval).minutes.do(refresh_api).tag(task_tag)
+    schedule.every(interval).seconds.do(program.refresh_api).tag(task_tag)
     return interval
 
 
@@ -28,24 +27,10 @@ def cancel_task(task_tag):
     schedule.clear(task_tag)
 
 
-def refresh_api(program):
-    if program.settings.mode == "weather":
-        return program.handle_weather()
-    # todo: ipv program function gelijk weather_parse aanroepen
-    if program.settings.mode == "social":
-        print("im very social")
-        rating = program.get_current_social_rating()
-        social_parse(rating)
-
-
 def run_program():
     program = Program(Settings())
-    # print(vars(program.settings))
     schedule.every(0.1).seconds.do(check_and_parse_message, program).tag('read-mqtt')
-    program.settings.mode = 'weather'
-    program.settings.future_forecast_time = 1
-    schedule.every(program.settings.refresh_interval).minutes.do(refresh_api, program).tag('api-handling')
-    program.handle_weather()
+    schedule.every(program.settings.refresh_interval).seconds.do(program.refresh_api).tag('api-handling')
 
     while True:
         schedule.run_pending()
@@ -94,6 +79,15 @@ class Program:
         self.MQTT.subscribe_topic("pacotinie@gmail.com/rpi")
         self.hourly_weather = []
 
+    def refresh_api(self):
+        print("yooooo")
+        if self.settings.mode == "weather":
+            return self.handle_weather()
+        # todo: ipv program function gelijk weather_parse aanroepen
+        if self.settings.mode == "social":
+            rating = self.get_current_social_rating()
+            social_parse(rating)
+
     def check_messages(self):
         if len(self.MQTT.messages) > 0:
             return self.MQTT.retrieve_message()
@@ -116,6 +110,7 @@ class Program:
                 try:
                     self.settings.save_settings_json(json.loads(value))
                     self.settings.save_to_file()
+                    change_interval_task('api-handling', self.settings.refresh_interval, program=self)
                 except ValueError as e:
                     self.MQTT.send_message("invalid json")
 
@@ -124,7 +119,7 @@ class Program:
                     setattr(self.settings, msg_type, value)
                     self.settings.save_to_file()
                     if msg_type == "mode" or msg_type == "refresh_interval":
-                        change_interval_task('api-handling', self.settings.refresh_interval)
+                        change_interval_task('api-handling', self.settings.refresh_interval, program=self)
             print("new settings" + str(vars(self.settings)))
 
     def handle_weather(self):
@@ -134,6 +129,9 @@ class Program:
             timezone = pytz.timezone('Europe/Amsterdam')
             now_with_future_forecast_time = datetime.datetime.now(timezone) + datetime.timedelta(
                 hours=self.settings.future_forecast_time)
+            print("time now: ")
+            print(datetime.datetime.now(timezone))
+            print(self.hourly_weather)
             if now_with_future_forecast_time.minute > 30:
                 now_with_future_forecast_time += datetime.timedelta(hours=1)
             for hour_of_estimation in self.hourly_weather:

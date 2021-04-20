@@ -5,14 +5,10 @@ import time
 prog = program.Program(settings.Settings())
 
 
-def test_arduino_map():
-    val = 1023
-    assert program.arduino_map(val, 0, 1023, 0, 255) == 255
-
-
 def test_change_interval_task():
-    assert program.change_interval_task('test', 20) == 20
+    assert program.change_interval_task('test', 20, prog) == 20
     program.cancel_task('test')
+    assert program.change_interval_task('test', 20) is None
 
 
 def test_get_social_rating():
