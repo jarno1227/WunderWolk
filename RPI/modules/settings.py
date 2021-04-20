@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class Settings:
     def __init__(self):
         #   todo: better system to dynamically add the quotations in the fetch commands

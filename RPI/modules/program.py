@@ -6,10 +6,9 @@ import datetime
 import pytz
 import schedule
 import json
-
+from modules.hardware import Hardware
 
 def change_interval_task(task_tag, interval=60, program=None):
-    print('new interval:', interval)
     if program is None:
         return print("Task scheduling has not been changed")
     schedule.clear(task_tag)
@@ -36,21 +35,27 @@ def run_program():
         time.sleep(0.1)
 
 
+h = Hardware()
 def weather_parse(hour_data):
     weather_code = hour_data['weather'][0]['id']
     if 300 > weather_code >= 200:  # thunderstorm
-        pass
+        h.make_thunder()
     elif 400 > weather_code >= 300:  # drizzle
-        pass
+        h.set_pump(50)
+        h.set_ledstrip((102, 204, 255), 170)
     elif 600 > weather_code >= 500:  # rain
-        pass
+        h.set_pump(150)
+        h.set_ledstrip((102, 204, 255), 255)
     elif 700 > weather_code > 600:  # snow
-        pass
+        h.set_pump(50)
+        h.set_ledstrip((131, 114, 110), 255)
     elif 800 > weather_code >= 700:  # atmosphere
-        pass
+        h.set_pump(0)
+        h.set_ledstrip((100,93,91), 255)
     elif weather_code == 800:  # clear sky
-        pass
+        h.make_sunny(hour_data['temp'], 0, 40)
     elif 900 > weather_code > 800:  # clouds
+        #todo: this one is tricky
         pass
     return weather_code
 
@@ -58,15 +63,18 @@ def weather_parse(hour_data):
 def social_parse(rating):
     pos_percentage = rating[0]
     if pos_percentage <= 10:
-        pass
+        h.make_thunder()
     elif pos_percentage <= 30:
-        pass
+        h.set_pump(255)
+        h.set_ledstrip((153, 102, 51), 255)
     elif pos_percentage <= 50:
-        pass
+        h.set_pump(100)
+        h.set_ledstrip((153, 102, 51), 150)
     elif pos_percentage <= 60:
-        pass
+        h.set_pump(0)
+        h.set_ledstrip((153, 102, 51), 50)
     elif pos_percentage > 60:
-        pass
+        h.make_sunny(pos_percentage)
 
 
 class Program:
@@ -79,7 +87,6 @@ class Program:
         self.hourly_weather = []
 
     def refresh_api(self):
-        print("yooooo")
         if self.settings.mode == "weather":
             return self.handle_weather()
         # todo: ipv program function gelijk weather_parse aanroepen
@@ -128,9 +135,6 @@ class Program:
             timezone = pytz.timezone('Europe/Amsterdam')
             now_with_future_forecast_time = datetime.datetime.now(timezone) + datetime.timedelta(
                 hours=self.settings.future_forecast_time)
-            print("time now: ")
-            print(datetime.datetime.now(timezone))
-            print(self.hourly_weather)
             if now_with_future_forecast_time.minute > 30:
                 now_with_future_forecast_time += datetime.timedelta(hours=1)
             for hour_of_estimation in self.hourly_weather:
