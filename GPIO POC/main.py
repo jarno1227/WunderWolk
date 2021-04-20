@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(12, GPIO.OUT)
 
 while True:
