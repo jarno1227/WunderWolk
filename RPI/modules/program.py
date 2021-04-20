@@ -31,7 +31,6 @@ def run_program():
     program = Program(Settings())
     schedule.every(0.1).seconds.do(check_and_parse_message, program).tag('read-mqtt')
     schedule.every(program.settings.refresh_interval).seconds.do(program.refresh_api).tag('api-handling')
-
     while True:
         schedule.run_pending()
         time.sleep(0.1)
