@@ -1,6 +1,5 @@
 import requests
 from abc import ABC, abstractmethod
-import datetime
 import json
 
 
@@ -52,13 +51,12 @@ class SocialConnect(Api):
                 positives += 1
             elif post['sentiment'] == "neutral":
                 neutrals += 1
-        total = negatives + positives + neutrals
+        total = negatives + positives  # + neutrals
         negatives_percentage = negatives / total * 100
         positives_percentage = positives / total * 100
-        neutrals_percentage = neutrals / total * 100
-        rating = [negatives_percentage, positives_percentage, neutrals_percentage]
+        # neutrals_percentage = neutrals / total * 100
+        rating = [positives_percentage, negatives_percentage]
         return rating
-
 
     def fetch_data(self):
         search_type = 'search?'
@@ -70,6 +68,7 @@ class SocialConnect(Api):
             if subject_counter < subject_count:
                 query += 'OR'
             subject_counter += 1
+            # todo: payload exact keywords worden gefiltered
         payload = {'key': self.api_key, 'q': query, 'network': 'web'}
         url = self.base_url + search_type
         r = requests.get(url, params=payload).text
@@ -104,9 +103,6 @@ class WeatherConnect(Api):
         r = requests.get(self._complete_url)
         content_string = r.text
         content_obj = json.loads(content_string)
-        for hour in content_obj['hourly']:
-            print(datetime.datetime.utcfromtimestamp(hour['dt']))
-
         return content_obj['hourly']
 
     def fetch_data(self):

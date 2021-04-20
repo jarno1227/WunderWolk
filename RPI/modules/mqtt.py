@@ -12,6 +12,7 @@ class MQTT:
         self.mqttc.on_subscribe = self.on_subscribe
         self.mqttc.connect("maqiatto.com", 1883, 60)
         self.mqttc.loop_start()
+        self.app_topic = "pacotinie@gmail.com/app"
 
     def on_connect(self, mqttc, obj, flags, rc):
         pass
@@ -32,8 +33,8 @@ class MQTT:
     def on_log(self, mqttc, obj, level, string):
         print(string)
 
-    def send_message(self, topic, message):
-        self.mqttc.publish(topic, message, qos=0, retain=False)
+    def send_message(self, message):
+        self.mqttc.publish(self.app_topic, message, qos=0, retain=False)
 
     def subscribe_topic(self, topic):
         self.mqttc.subscribe(topic, 0)

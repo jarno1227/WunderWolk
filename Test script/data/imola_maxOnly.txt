@@ -1,0 +1,441 @@
+Lap 1 time: Sun Apr 18 2021 15:04:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 3 
+Neutral: 43
+Negative: 4    
+
+Lap 2 time: Sun Apr 18 2021 15:04:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 3 
+Neutral: 43
+Negative: 4    
+
+Lap 3 time: Sun Apr 18 2021 15:04:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 45
+Negative: 0    
+
+Lap 4 time: Sun Apr 18 2021 15:05:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 45
+Negative: 0    
+
+Lap 5 time: Sun Apr 18 2021 15:05:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 4 
+Neutral: 41
+Negative: 5    
+
+Lap 6 time: Sun Apr 18 2021 15:05:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 4 
+Neutral: 41
+Negative: 5    
+
+Lap 7 time: Sun Apr 18 2021 15:05:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 39
+Negative: 5    
+
+Lap 8 time: Sun Apr 18 2021 15:06:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 39
+Negative: 5    
+
+Lap 9 time: Sun Apr 18 2021 15:06:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 32
+Negative: 7    
+
+Lap 10 time: Sun Apr 18 2021 15:06:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 32
+Negative: 7    
+
+Lap 11 time: Sun Apr 18 2021 15:06:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 13 
+Neutral: 34
+Negative: 3    
+
+Lap 12 time: Sun Apr 18 2021 15:07:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 13 
+Neutral: 34
+Negative: 3    
+
+Lap 13 time: Sun Apr 18 2021 15:07:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 13 
+Neutral: 35
+Negative: 2    
+
+Lap 14 time: Sun Apr 18 2021 15:07:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 13 
+Neutral: 35
+Negative: 2    
+
+Lap 15 time: Sun Apr 18 2021 15:07:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 41
+Negative: 4    
+
+Lap 16 time: Sun Apr 18 2021 15:08:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 41
+Negative: 4    
+
+Lap 17 time: Sun Apr 18 2021 15:08:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 43
+Negative: 1    
+
+Lap 18 time: Sun Apr 18 2021 15:08:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 43
+Negative: 1    
+
+Lap 19 time: Sun Apr 18 2021 15:08:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 40
+Negative: 1    
+
+Lap 20 time: Sun Apr 18 2021 15:09:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 40
+Negative: 1    
+
+Lap 21 time: Sun Apr 18 2021 15:09:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 38
+Negative: 1    
+
+Lap 22 time: Sun Apr 18 2021 15:09:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 38
+Negative: 1    
+
+Lap 23 time: Sun Apr 18 2021 15:09:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 38
+Negative: 1    
+
+Lap 24 time: Sun Apr 18 2021 15:10:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 11 
+Neutral: 38
+Negative: 1    
+
+Lap 25 time: Sun Apr 18 2021 15:10:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 42
+Negative: 0    
+
+Lap 26 time: Sun Apr 18 2021 15:10:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 42
+Negative: 0    
+
+Lap 27 time: Sun Apr 18 2021 15:10:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 41
+Negative: 3    
+
+Lap 28 time: Sun Apr 18 2021 15:11:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 41
+Negative: 3    
+
+Lap 29 time: Sun Apr 18 2021 15:11:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 3 
+Neutral: 43
+Negative: 4    
+
+Lap 30 time: Sun Apr 18 2021 15:11:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 3 
+Neutral: 43
+Negative: 4    
+
+Lap 31 time: Sun Apr 18 2021 15:11:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 3 
+Neutral: 44
+Negative: 3    
+
+Lap 32 time: Sun Apr 18 2021 15:12:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 3 
+Neutral: 44
+Negative: 3    
+
+Lap 33 time: Sun Apr 18 2021 15:12:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 42
+Negative: 3    
+
+Lap 34 time: Sun Apr 18 2021 15:12:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 42
+Negative: 3    
+
+Lap 35 time: Sun Apr 18 2021 15:12:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 4 
+Neutral: 44
+Negative: 2    
+
+Lap 36 time: Sun Apr 18 2021 15:13:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 4 
+Neutral: 44
+Negative: 2    
+
+Lap 37 time: Sun Apr 18 2021 15:13:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 40
+Negative: 2    
+
+Lap 38 time: Sun Apr 18 2021 15:13:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 40
+Negative: 2    
+
+Lap 39 time: Sun Apr 18 2021 15:13:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 36
+Negative: 5    
+
+Lap 40 time: Sun Apr 18 2021 15:14:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 36
+Negative: 5    
+
+Lap 41 time: Sun Apr 18 2021 15:14:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 14 
+Neutral: 32
+Negative: 4    
+
+Lap 42 time: Sun Apr 18 2021 15:14:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 14 
+Neutral: 32
+Negative: 4    
+
+Lap 43 time: Sun Apr 18 2021 15:14:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 13 
+Neutral: 33
+Negative: 4    
+
+Lap 44 time: Sun Apr 18 2021 15:15:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 13 
+Neutral: 33
+Negative: 4    
+
+Lap 45 time: Sun Apr 18 2021 15:15:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 38
+Negative: 3    
+
+Lap 46 time: Sun Apr 18 2021 15:15:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 38
+Negative: 3    
+
+Lap 47 time: Sun Apr 18 2021 15:15:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 36
+Negative: 5    
+
+Lap 48 time: Sun Apr 18 2021 15:16:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 36
+Negative: 5    
+
+Lap 49 time: Sun Apr 18 2021 15:16:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 35
+Negative: 7    
+
+Lap 50 time: Sun Apr 18 2021 15:16:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 35
+Negative: 7    
+
+Lap 51 time: Sun Apr 18 2021 15:16:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 33
+Negative: 8    
+
+Lap 52 time: Sun Apr 18 2021 15:17:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 33
+Negative: 8    
+
+Lap 53 time: Sun Apr 18 2021 15:17:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 10 
+Neutral: 32
+Negative: 8    
+
+Lap 54 time: Sun Apr 18 2021 15:17:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 10 
+Neutral: 32
+Negative: 8    
+
+Lap 55 time: Sun Apr 18 2021 15:17:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 35
+Negative: 7    
+
+Lap 56 time: Sun Apr 18 2021 15:18:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 8 
+Neutral: 35
+Negative: 7    
+
+Lap 57 time: Sun Apr 18 2021 15:18:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 39
+Negative: 5    
+
+Lap 58 time: Sun Apr 18 2021 15:18:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 39
+Negative: 5    
+
+Lap 59 time: Sun Apr 18 2021 15:18:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 41
+Negative: 4    
+
+Lap 60 time: Sun Apr 18 2021 15:19:00 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 5 
+Neutral: 41
+Negative: 4    
+
+Lap 61 time: Sun Apr 18 2021 15:19:16 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 38
+Negative: 6    
+
+Lap 62 time: Sun Apr 18 2021 15:19:32 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 6 
+Neutral: 38
+Negative: 6    
+
+Lap 63 time: Sun Apr 18 2021 15:19:48 GMT+0200 (Midden-Europese zomertijd) 
+ 
+Topics: Max Verstappen,Red Bull
+Positive: 9 
+Neutral: 34
+Negative: 7    
+
