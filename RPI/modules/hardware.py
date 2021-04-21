@@ -26,7 +26,7 @@ class Hardware:
         self.reset()
 
     def reset(self):
-        schedule.clear()
+        schedule.clear('thunder_task')
         self.set_ledstrip((0, 0, 0))
         self.set_pump(0)
 

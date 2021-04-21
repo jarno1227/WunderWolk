@@ -82,6 +82,7 @@ class Program:
         self.hourly_weather = []
 
     def refresh_api(self):
+        print(self.settings.mode)
         if self.settings.mode == "weather":
             return self.handle_weather()
         if self.settings.mode == "social":
