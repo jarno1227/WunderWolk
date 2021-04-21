@@ -9,6 +9,7 @@ def arduino_map(x, in_min, in_max, out_min, out_max):
 
 
 def thunder_storm_threaded(hardware):
+    print("wow")
     job_thread = threading.Thread(target=hardware.thunder_effect)
     job_thread.start()
 
@@ -37,7 +38,7 @@ class Hardware:
     def set_ledstrip(self, rgb):
         self.gpio.set_PWM_dutycycle(self.pins['stripR'], rgb[0])
         self.gpio.set_PWM_dutycycle(self.pins['stripG'], rgb[1])
-        self.gpio.set_PWM_dutycycle(self.pins['stripG'], rgb[2])
+        self.gpio.set_PWM_dutycycle(self.pins['stripB'], rgb[2])
 
     def thunder_leds(self):
         self.set_ledstrip((42, 4, 84))  # dark purple
