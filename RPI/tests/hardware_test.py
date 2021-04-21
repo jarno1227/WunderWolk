@@ -1,5 +1,6 @@
 from modules.hardware import *
 import time
+import schedule
 h = Hardware()
 
 
@@ -9,5 +10,7 @@ def test_arduino_map():
 
 def test_thunder():
     h.make_thunder()
-    while(True):
+    while True:
+        schedule.run_pending()
+        time.sleep(0.1)
         print("kaas")
