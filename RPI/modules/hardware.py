@@ -15,7 +15,7 @@ class Hardware:
         }
 
     def reset(self):
-        #todo remove scheduled tasks
+        #todo cancel scheduled tasks
         self.set_ledstrip((0, 0, 0), 0)
         self.set_pump()
 
@@ -34,8 +34,8 @@ class Hardware:
         self.set_pump(255)
         self.thunder_leds()
 
-    def make_sunny(self, value, min=0, max=100):
+    def make_sunny(self, value, min=0, max=255):
         self.reset()
-        brightness = arduino_map(value, 0, 100, 0, 255)
+        brightness = arduino_map(value, 0, 100, min, max)
         self.set_ledstrip((255, 255, 102), brightness)
 

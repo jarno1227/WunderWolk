@@ -1,7 +1,7 @@
 import modules.program as program
 import modules.settings as settings
 import time
-
+import json
 prog = program.Program(settings.Settings())
 
 
@@ -40,7 +40,9 @@ def test_process_messages():
     prog.process_messages("request|settings")
     time.sleep(1)
     msg = prog.MQTT.retrieve_message()
-    #     todo: check if msg  json string
+    msg_escaped = msg.replace("'", '"')
+    msg_json = json.loads(msg_escaped)
+    assert msg_json['mode'] == 'weather'
     prog.process_messages("request|mode")
     time.sleep(1)
     msg = prog.MQTT.retrieve_message()
@@ -52,9 +54,7 @@ def test_process_messages():
     assert prog.settings.brightness == 50
     prog.process_messages("brightness|70")
     assert prog.settings.brightness == 70
-    # todo: msg_type mode or refresh_interval, check if change interval is changed
 
 
 def test_handle_weather():
     assert prog.handle_weather() is not False
-    # todo: think how i display succes with weather handling

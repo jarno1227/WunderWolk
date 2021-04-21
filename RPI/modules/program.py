@@ -8,6 +8,7 @@ import schedule
 import json
 from modules.hardware import Hardware
 
+
 def change_interval_task(task_tag, interval=60, program=None):
     if program is None:
         return print("Task scheduling has not been changed")
@@ -36,6 +37,8 @@ def run_program():
 
 
 h = Hardware()
+
+
 def weather_parse(hour_data):
     weather_code = hour_data['weather'][0]['id']
     if 300 > weather_code >= 200:  # thunderstorm
@@ -51,11 +54,11 @@ def weather_parse(hour_data):
         h.set_ledstrip((131, 114, 110), 255)
     elif 800 > weather_code >= 700:  # atmosphere
         h.set_pump(0)
-        h.set_ledstrip((100,93,91), 255)
+        h.set_ledstrip((100, 93, 91), 255)
     elif weather_code == 800:  # clear sky
         h.make_sunny(hour_data['temp'], 0, 40)
     elif 900 > weather_code > 800:  # clouds
-        #todo: this one is tricky
+        # todo: this one is tricky
         pass
     return weather_code
 
@@ -89,7 +92,6 @@ class Program:
     def refresh_api(self):
         if self.settings.mode == "weather":
             return self.handle_weather()
-        # todo: ipv program function gelijk weather_parse aanroepen
         if self.settings.mode == "social":
             rating = self.get_current_social_rating()
             social_parse(rating)

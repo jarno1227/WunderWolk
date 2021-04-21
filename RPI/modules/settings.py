@@ -4,8 +4,6 @@ import os
 
 class Settings:
     def __init__(self):
-        #   todo: better system to dynamically add the quotations in the fetch commands
-        #       subjects = ['"mark rutte"', '"pieter omtzigt"']
         self.available_modes = [
             "weather",
             "social"
@@ -73,7 +71,6 @@ class Settings:
 
     @refresh_interval.setter
     def refresh_interval(self, value):
-        # todo: refresh scheduler interval
         try:
             value = int(value)
             self._refresh_interval = value
