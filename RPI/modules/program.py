@@ -54,8 +54,7 @@ def weather_parse(hour_data):
     elif weather_code == 800:  # clear sky
         h.make_sunny(hour_data['temp'], 0, 40)
     elif 900 > weather_code > 800:  # clouds
-        # todo: this one is tricky
-        pass
+        h.set_all((50, 50, 50), 0)
     return weather_code
 
 

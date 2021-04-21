@@ -9,7 +9,6 @@ def arduino_map(x, in_min, in_max, out_min, out_max):
 
 
 def thunder_storm_threaded(hardware):
-    print("wow")
     job_thread = threading.Thread(target=hardware.thunder_effect)
     job_thread.start()
 
@@ -54,7 +53,7 @@ class Hardware:
 
     def make_thunder(self):
         self.reset()
-        self.set_pump(255)
+        self.set_pump(200)
         self.thunder_leds()
 
     def make_sunny(self, value, min=0, max=255):

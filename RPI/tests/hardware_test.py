@@ -9,5 +9,6 @@ def test_arduino_map():
 
 def test_thunder():
     h.make_thunder()
-    while(True):
-        print("kaas")
+    while True:
+        schedule.run_pending()
+        time.sleep(0.1)
