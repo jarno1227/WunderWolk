@@ -17,7 +17,7 @@ def thunder_storm_threaded(hardware):
 class Hardware:
     def __init__(self):
         self.pins = {
-            'pump': 0,
+            'pump': 13,
             'stripR': 21,
             'stripG': 20,
             'stripB': 16,
@@ -32,8 +32,7 @@ class Hardware:
         self.set_pump(0)
 
     def set_pump(self, speed=0):
-        pass
-        # self.gpio.set_PWM_dutycycle(self.pins['pump'], speed)
+        self.gpio.set_PWM_dutycycle(self.pins['pump'], speed)
 
     def set_ledstrip(self, rgb):
         self.gpio.set_PWM_dutycycle(self.pins['stripR'], rgb[0])
@@ -45,8 +44,12 @@ class Hardware:
         schedule.every(1).to(7).seconds.do(thunder_storm_threaded, self).tag('thunder_task')
 
     def thunder_effect(self):
-        self.set_ledstrip((255, 255, 255))  # white for thunder
-        sleep(1)
+        self.set_ledstrip((255, 175, 175))  # white for thunder
+        sleep(0.3)
+        self.set_ledstrip((42, 4, 84))  # dark purple
+        sleep(0.3)
+        self.set_ledstrip((255, 175, 175))  # white for thunder
+        sleep(0.6)
         self.set_ledstrip((42, 4, 84))  # dark purple
 
     def make_thunder(self):
@@ -57,4 +60,9 @@ class Hardware:
     def make_sunny(self, value, min=0, max=255):
         self.reset()
         brightness = arduino_map(value, 0, 100, min, max)
-        self.set_ledstrip((brightness, 255, 255))
+        self.set_ledstrip((brightness, 175, 175))
+
+    def set_all(self, rgb, speed):
+        self.reset()
+        self.set_pump(speed)
+        self.set_ledstrip(rgb)

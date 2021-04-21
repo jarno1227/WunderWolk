@@ -44,17 +44,13 @@ def weather_parse(hour_data):
     if 300 > weather_code >= 200:  # thunderstorm
         h.make_thunder()
     elif 400 > weather_code >= 300:  # drizzle
-        h.set_pump(50)
-        h.set_ledstrip((102, 204, 255), 170)
+        h.set_all((102, 204, 255), 50)
     elif 600 > weather_code >= 500:  # rain
-        h.set_pump(150)
-        h.set_ledstrip((102, 204, 255), 255)
+        h.set_all((102, 204, 255), 150)
     elif 700 > weather_code > 600:  # snow
-        h.set_pump(50)
-        h.set_ledstrip((131, 114, 110), 255)
+        h.set_all((131, 114, 110), 50)
     elif 800 > weather_code >= 700:  # atmosphere
-        h.set_pump(0)
-        h.set_ledstrip((100, 93, 91), 255)
+        h.set_all((100, 93, 91), 0)
     elif weather_code == 800:  # clear sky
         h.make_sunny(hour_data['temp'], 0, 40)
     elif 900 > weather_code > 800:  # clouds
@@ -68,14 +64,11 @@ def social_parse(rating):
     if pos_percentage <= 10:
         h.make_thunder()
     elif pos_percentage <= 30:
-        h.set_pump(255)
-        h.set_ledstrip((153, 102, 51), 255)
+        h.set_all((153, 102, 51), 255)
     elif pos_percentage <= 50:
-        h.set_pump(100)
-        h.set_ledstrip((153, 102, 51), 150)
+        h.set_all((153, 102, 51), 100)
     elif pos_percentage <= 60:
-        h.set_pump(0)
-        h.set_ledstrip((153, 102, 51), 50)
+        h.set_all((153, 102, 51), 0)
     elif pos_percentage > 60:
         h.make_sunny(pos_percentage)
 
