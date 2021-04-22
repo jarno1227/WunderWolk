@@ -64,9 +64,8 @@ class Settings:
 
     @property
     def refresh_interval(self):
-        if self.mode == "weather":
-            return self._refresh_interval * 30  # weather is updatable per hour
-
+        if self.mode == "social" and self.refresh_interval < 15:
+            return 15  # social searcher max 100 requests per day, 24 hours * 4 = 96. 1 hour / 4 = 15
         return self._refresh_interval
 
     @refresh_interval.setter
