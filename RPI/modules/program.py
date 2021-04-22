@@ -6,7 +6,13 @@ import datetime
 import pytz
 import schedule
 import json
-from modules.hardware import Hardware
+
+try:
+    from modules.hardware import Hardware
+
+    h = Hardware()
+except:
+    h = "testmode"
 
 
 def change_interval_task(task_tag, interval=60, program=None):
@@ -36,40 +42,43 @@ def run_program():
         time.sleep(0.1)
 
 
-h = Hardware()
-
-
 def weather_parse(hour_data):
     weather_code = hour_data['weather'][0]['id']
-    if 300 > weather_code >= 200:  # thunderstorm
-        h.make_thunder()
-    elif 400 > weather_code >= 300:  # drizzle
-        h.set_all((102, 204, 255), 50)
-    elif 600 > weather_code >= 500:  # rain
-        h.set_all((102, 204, 255), 150)
-    elif 700 > weather_code > 600:  # snow
-        h.set_all((131, 114, 110), 50)
-    elif 800 > weather_code >= 700:  # atmosphere
-        h.set_all((100, 93, 91), 0)
-    elif weather_code == 800:  # clear sky
-        h.make_sunny(hour_data['temp'], 0, 40)
-    elif 900 > weather_code > 800:  # clouds
-        h.set_all((50, 50, 50), 0)
-    return weather_code
+    try:
+        if 300 > weather_code >= 200:  # thunderstorm
+            h.make_thunder()
+        elif 400 > weather_code >= 300:  # drizzle
+            h.set_all((102, 204, 255), 50)
+        elif 600 > weather_code >= 500:  # rain
+            h.set_all((102, 204, 255), 150)
+        elif 700 > weather_code > 600:  # snow
+            h.set_all((131, 114, 110), 50)
+        elif 800 > weather_code >= 700:  # atmosphere
+            h.set_all((100, 93, 91), 0)
+        elif weather_code == 800:  # clear sky
+            h.make_sunny(hour_data['temp'], 0, 40)
+        elif 900 > weather_code > 800:  # clouds
+            h.set_all((50, 50, 50), 0)
+        return weather_code
+    except:
+        print('weather hardware parsed')
 
 
 def social_parse(rating):
     pos_percentage = rating[0]
-    if pos_percentage <= 10:
-        h.make_thunder()
-    elif pos_percentage <= 30:
-        h.set_all((153, 102, 51), 255)
-    elif pos_percentage <= 50:
-        h.set_all((153, 102, 51), 100)
-    elif pos_percentage <= 60:
-        h.set_all((153, 102, 51), 0)
-    elif pos_percentage > 60:
-        h.make_sunny(pos_percentage)
+    try:
+        if pos_percentage <= 10:
+            h.make_thunder()
+        elif pos_percentage <= 30:
+            h.set_all((153, 102, 51), 255)
+        elif pos_percentage <= 50:
+            h.set_all((153, 102, 51), 100)
+        elif pos_percentage <= 60:
+            h.set_all((153, 102, 51), 0)
+        elif pos_percentage > 60:
+            h.make_sunny(pos_percentage)
+    except:
+        print('social hardware parsed')
 
 
 class Program:

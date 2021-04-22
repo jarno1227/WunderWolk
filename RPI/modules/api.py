@@ -68,7 +68,8 @@ class SocialConnect(Api):
             if subject_counter < subject_count:
                 query += 'OR'
             subject_counter += 1
-        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key, 'fields': 'sentiment,network,type,lang', 'lang':'nl'}
+        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key,
+                   'lang': 'nl'}  # 'fields': 'sentiment,network,type,lang',
         url = self.base_url + search_type
         # request data from api using the base url and the parameter payload.
         r = requests.get(url, params=payload).text
