@@ -59,7 +59,7 @@ class Hardware:
     def make_sunny(self, value, min=0, max=255):
         self.reset()
         brightness = arduino_map(value, 0, 100, min, max)
-        self.set_ledstrip((brightness, 175, 175))
+        self.set_ledstrip((brightness, 50, 50))
 
     def set_all(self, rgb, speed):
         self.reset()

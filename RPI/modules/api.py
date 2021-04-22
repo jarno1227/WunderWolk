@@ -59,7 +59,6 @@ class SocialConnect(Api):
         return rating
 
     def fetch_data(self):
-        # `https://api.social-searcher.com/v2/search?q=${subjectsToQuery(subjects)}&network=twitter,facebook,reddit&limit=50&key=${process.env.user_key}&fields=sentiment,network,type,lang`
         search_type = 'search'
         subject_counter = 0
         subject_count = len(self.settings.subjects)
@@ -69,11 +68,8 @@ class SocialConnect(Api):
             if subject_counter < subject_count:
                 query += 'OR'
             subject_counter += 1
-            # todo: payload exact keywords worden gefiltered
-        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 50, 'key': self.api_key, 'fields': 'sentiment,network,type,lang'}
+        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key, 'fields': 'sentiment,network,type,lang', 'lang':'nl'}
         url = self.base_url + search_type
-        # log the build request
-        print(requests.get(url, params=payload))
         # request data from api using the base url and the parameter payload.
         r = requests.get(url, params=payload).text
         # serialize plaintext response to json
