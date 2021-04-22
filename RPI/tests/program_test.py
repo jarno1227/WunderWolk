@@ -1,4 +1,4 @@
-import modules.program as program
+import program as program
 import modules.settings as settings
 import time
 import json

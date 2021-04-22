@@ -1,4 +1,3 @@
-import modules.program as program
 import modules.settings as settings
 import modules.api as api_conn
 

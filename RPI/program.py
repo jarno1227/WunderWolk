@@ -147,3 +147,7 @@ class Program:
     def get_current_social_rating(self):
         posts_obj = self.SocialConnect.fetch_data()
         return self.SocialConnect.calc_avg_sentiment(posts_obj)
+
+
+if __name__ == "__main__":
+    run_program()
