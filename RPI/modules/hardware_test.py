@@ -13,7 +13,8 @@ def start_scheduler():
         h.reset()
 
 
-h = Hardware()
+
+
 # testfile is in modules as it is not a unit test but a hardware test
 
 def test_arduino_map():
@@ -22,37 +23,45 @@ def test_arduino_map():
 
 
 def test_thunder_effect_threaded():
+    h = Hardware()
     thunder_effect_threaded(h)
 
 
 def test_reset():
+    h = Hardware()
     h.reset()
 
 
 def test_set_pump():
+    h = Hardware()
     h.set_pump(100)
 
 
 def test_set_ledstrip():
     rgb = (100, 100, 100)
+    h = Hardware()
     h.set_ledstrip(rgb)
 
 
 def test_thunder_leds():
+    h = Hardware()
     h.thunder_leds()
     start_scheduler()
 
 
 def test_thunder_effect():
+    h = Hardware()
     h.thunder_effect()
 
 
 def test_make_thunder():
+    h = Hardware()
     h.make_thunder()
     start_scheduler()
 
 
 def test_make_sunny():
+    h = Hardware()
     h.make_sunny(value=randint(60, 100))
 
 
@@ -61,4 +70,5 @@ def test_set_all():
     g = randint(0, 175)
     b = randint(0, 175)
     speed = randint(50, 255)
+    h = Hardware()
     h.set_all((r, g, b), speed)
