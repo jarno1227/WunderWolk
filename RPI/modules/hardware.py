@@ -8,7 +8,7 @@ def arduino_map(x, in_min, in_max, out_min, out_max):
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
-def thunder_storm_threaded(hardware):
+def thunder_effect_threaded(hardware):
     job_thread = threading.Thread(target=hardware.thunder_effect)
     job_thread.start()
 
@@ -40,7 +40,7 @@ class Hardware:
 
     def thunder_leds(self):
         self.set_ledstrip((42, 4, 84))  # dark purple
-        schedule.every(1).to(7).seconds.do(thunder_storm_threaded, self).tag('thunder_task')
+        schedule.every(1).to(7).seconds.do(thunder_effect_threaded, self).tag('thunder_task')
 
     def thunder_effect(self):
         self.set_ledstrip((255, 175, 175))  # white for thunder
