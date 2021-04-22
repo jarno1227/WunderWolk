@@ -4,6 +4,10 @@ import schedule
 from random import randint
 
 
+# testfile is in modules as it is not a unit test but a hardware test
+h = Hardware()
+
+
 def start_scheduler():
     try:
         while True:
@@ -13,27 +17,20 @@ def start_scheduler():
         h.reset()
 
 
-
-
-# testfile is in modules as it is not a unit test but a hardware test
-
 def test_arduino_map():
     val = 1023
     assert arduino_map(val, 0, 1023, 0, 255) == 255
 
 
 def test_thunder_effect_threaded():
-    h = Hardware()
     thunder_effect_threaded(h)
 
 
 def test_reset():
-    h = Hardware()
     h.reset()
 
 
 def test_set_pump():
-    h = Hardware()
     h.set_pump(100)
 
 
@@ -44,24 +41,20 @@ def test_set_ledstrip():
 
 
 def test_thunder_leds():
-    h = Hardware()
     h.thunder_leds()
     start_scheduler()
 
 
 def test_thunder_effect():
-    h = Hardware()
     h.thunder_effect()
 
 
 def test_make_thunder():
-    h = Hardware()
     h.make_thunder()
     start_scheduler()
 
 
 def test_make_sunny():
-    h = Hardware()
     h.make_sunny(value=randint(60, 100))
 
 
@@ -70,5 +63,4 @@ def test_set_all():
     g = randint(0, 175)
     b = randint(0, 175)
     speed = randint(50, 255)
-    h = Hardware()
     h.set_all((r, g, b), speed)
