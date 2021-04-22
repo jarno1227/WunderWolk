@@ -1,7 +1,9 @@
 import schedule
+
 has_pigpio = False
 try:
     import pigpio
+
     has_pigpio = True
 except:
     print("gpio not initialized")
@@ -64,10 +66,10 @@ class Hardware:
         self.set_pump(200)
         self.thunder_leds()
 
-    def make_sunny(self, value, min=0, max=255):
+    def make_sunny(self, value, min=0, max=70):
         self.reset()
         brightness = arduino_map(value, 0, 100, min, max)
-        self.set_ledstrip((brightness, 50, 50))
+        self.set_ledstrip((255, brightness, 0))
 
     def set_all(self, rgb, speed):
         self.reset()

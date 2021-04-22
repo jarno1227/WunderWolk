@@ -31,7 +31,7 @@ def test_reset():
 
 
 def test_set_pump():
-    h.set_pump(100)
+    h.set_pump(speed=100)
 
 
 def test_set_ledstrip():
