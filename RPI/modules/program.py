@@ -7,12 +7,9 @@ import pytz
 import schedule
 import json
 
-try:
-    from modules.hardware import Hardware
+from modules.hardware import Hardware
 
-    h = Hardware()
-except:
-    h = "testmode"
+h = Hardware()
 
 
 def change_interval_task(task_tag, interval=60, program=None):

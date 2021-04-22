@@ -1,5 +1,10 @@
 import schedule
-import pigpio
+has_pigpio = False
+try:
+    import pigpio
+    has_pigpio = True
+except:
+    print("gpio not initialized")
 import threading
 from time import sleep
 
@@ -22,7 +27,8 @@ class Hardware:
             'stripB': 16,
         }
         self.previous_thunder_ledstate = 0
-        self.gpio = pigpio.pi()
+        if has_pigpio:
+            self.gpio = pigpio.pi()
         self.reset()
 
     def reset(self):
@@ -31,12 +37,14 @@ class Hardware:
         self.set_pump(0)
 
     def set_pump(self, speed=0):
-        self.gpio.set_PWM_dutycycle(self.pins['pump'], speed)
+        if has_pigpio:
+            self.gpio.set_PWM_dutycycle(self.pins['pump'], speed)
 
     def set_ledstrip(self, rgb):
-        self.gpio.set_PWM_dutycycle(self.pins['stripR'], rgb[0])
-        self.gpio.set_PWM_dutycycle(self.pins['stripG'], rgb[1])
-        self.gpio.set_PWM_dutycycle(self.pins['stripB'], rgb[2])
+        if has_pigpio:
+            self.gpio.set_PWM_dutycycle(self.pins['stripR'], rgb[0])
+            self.gpio.set_PWM_dutycycle(self.pins['stripG'], rgb[1])
+            self.gpio.set_PWM_dutycycle(self.pins['stripB'], rgb[2])
 
     def thunder_leds(self):
         self.set_ledstrip((42, 4, 84))  # dark purple

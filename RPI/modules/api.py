@@ -33,10 +33,6 @@ class Api(ABC):
     def base_url(self, value):
         self._base_url = value
 
-    @abstractmethod
-    def fetch_data(self):
-        pass
-
 
 class SocialConnect(Api):
     def __init__(self, key, settings):
@@ -90,6 +86,8 @@ class WeatherConnect(Api):
         self.update_url()
 
     def update_url(self):
+        location = self.settings.location
+        self.coordinates = "lat=" + str(location[0]) + "&lon=" + str(location[1])
         self._complete_url = self.base_url + "onecall?" + self.coordinates + "&" + self.exclusions + "&" \
                              + self.units + "&" + self.app_id
 
@@ -106,6 +104,3 @@ class WeatherConnect(Api):
         content_string = r.text
         content_obj = json.loads(content_string)
         return content_obj['hourly']
-
-    def fetch_data(self):
-        pass
