@@ -33,10 +33,6 @@ class Api(ABC):
     def base_url(self, value):
         self._base_url = value
 
-    @abstractmethod
-    def fetch_data(self):
-        pass
-
 
 class SocialConnect(Api):
     def __init__(self, key, settings):
@@ -52,8 +48,8 @@ class SocialConnect(Api):
             elif post['sentiment'] == "neutral":
                 neutrals += 1
         total = negatives + positives  # + neutrals
-        negatives_percentage = negatives / total * 100
-        positives_percentage = positives / total * 100
+        negatives_percentage = negatives / total * 100 if negatives > 0 else 0
+        positives_percentage = positives / total * 100 if positives > 0 else 0
         # neutrals_percentage = neutrals / total * 100
         rating = [positives_percentage, negatives_percentage]
         return rating
@@ -68,7 +64,8 @@ class SocialConnect(Api):
             if subject_counter < subject_count:
                 query += 'OR'
             subject_counter += 1
-        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key, 'fields': 'sentiment,network,type,lang', 'lang':'nl'}
+        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key,
+                   'lang': 'nl'}  # 'fields': 'sentiment,network,type,lang',
         url = self.base_url + search_type
         # request data from api using the base url and the parameter payload.
         r = requests.get(url, params=payload).text
@@ -89,6 +86,8 @@ class WeatherConnect(Api):
         self.update_url()
 
     def update_url(self):
+        location = self.settings.location
+        self.coordinates = "lat=" + str(location[0]) + "&lon=" + str(location[1])
         self._complete_url = self.base_url + "onecall?" + self.coordinates + "&" + self.exclusions + "&" \
                              + self.units + "&" + self.app_id
 
@@ -105,6 +104,3 @@ class WeatherConnect(Api):
         content_string = r.text
         content_obj = json.loads(content_string)
         return content_obj['hourly']
-
-    def fetch_data(self):
-        pass

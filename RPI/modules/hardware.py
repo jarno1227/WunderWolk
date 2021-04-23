@@ -1,10 +1,19 @@
 import schedule
-import pigpio
+
+has_pigpio = False
+try:
+    import pigpio
+
+    has_pigpio = True
+except:
+    print("gpio not initialized")
 import threading
 from time import sleep
 
 
 def arduino_map(x, in_min, in_max, out_min, out_max):
+    if x > in_max:
+        x = in_max
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
@@ -14,15 +23,22 @@ def thunder_effect_threaded(hardware):
 
 
 class Hardware:
-    def __init__(self):
+    def __init__(self, settings):
         self.pins = {
             'pump': 13,
             'stripR': 21,
             'stripG': 20,
             'stripB': 16,
         }
-        self.previous_thunder_ledstate = 0
-        self.gpio = pigpio.pi()
+        self.pinValues = {
+            'pump': 0,
+            'stripR': 0,
+            'stripG': 0,
+            'stripB': 0,
+        }
+        self.settings = settings
+        if has_pigpio:
+            self.gpio = pigpio.pi()
         self.reset()
 
     def reset(self):
@@ -31,12 +47,23 @@ class Hardware:
         self.set_pump(0)
 
     def set_pump(self, speed=0):
-        self.gpio.set_PWM_dutycycle(self.pins['pump'], speed)
+        if has_pigpio:
+            self.gpio.set_PWM_dutycycle(self.pins['pump'], speed)
 
     def set_ledstrip(self, rgb):
-        self.gpio.set_PWM_dutycycle(self.pins['stripR'], rgb[0])
-        self.gpio.set_PWM_dutycycle(self.pins['stripG'], rgb[1])
-        self.gpio.set_PWM_dutycycle(self.pins['stripB'], rgb[2])
+        if has_pigpio:
+            self.pinValues['stripR'] = rgb[0]
+            self.pinValues['stripG'] = rgb[1]
+            self.pinValues['stripB'] = rgb[2]
+            r = int(self.pinValues['stripR'] / 100 * self.settings.brightness)
+            g = int(self.pinValues['stripG'] / 100 * self.settings.brightness)
+            b = int(self.pinValues['stripB'] / 100 * self.settings.brightness)
+            self.gpio.set_PWM_dutycycle(self.pins['stripR'], r)
+            self.gpio.set_PWM_dutycycle(self.pins['stripG'], g)
+            self.gpio.set_PWM_dutycycle(self.pins['stripB'], b)
+
+    def update_brightness(self):
+        self.set_ledstrip((self.pinValues['stripR'], self.pinValues['stripG'], self.pinValues['stripB']))
 
     def thunder_leds(self):
         self.set_ledstrip((42, 4, 84))  # dark purple
@@ -56,10 +83,10 @@ class Hardware:
         self.set_pump(200)
         self.thunder_leds()
 
-    def make_sunny(self, value, min=0, max=255):
+    def make_sunny(self, value, min_input=0, max_input=100, min_output=0, max_output=60):
         self.reset()
-        brightness = arduino_map(value, 0, 100, min, max)
-        self.set_ledstrip((brightness, 50, 50))
+        brightness = arduino_map(value, min_input, max_input, min_output, max_output)
+        self.set_ledstrip((255, brightness, 0))
 
     def set_all(self, rgb, speed):
         self.reset()

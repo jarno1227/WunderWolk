@@ -12,11 +12,13 @@ def test_edit_settings_properties():
     # refresh_interval
     sett.mode = 'social'
     sett.refresh_interval = 1
-    assert sett.refresh_interval == 1
+    assert sett.refresh_interval == 15  # if interval < 15, return 15
+    sett.refresh_interval = 16
+    assert sett.refresh_interval == 16
     sett.refresh_interval = "test"
-    assert sett.refresh_interval == 1
+    assert sett.refresh_interval == 16
     sett.mode = 'weather'
-    assert sett.refresh_interval == 30
+    assert sett.refresh_interval == 16
     # future_forecast_time
     sett.future_forecast_time = 2
     sett.future_forecast_time = "wow"

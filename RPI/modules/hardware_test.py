@@ -1,11 +1,12 @@
 from modules.hardware import *
+from modules.settings import Settings
 import time
 import schedule
 from random import randint
 
-
 # testfile is in modules as it is not a unit test but a hardware test
-h = Hardware()
+s = Settings()
+h = Hardware(s)
 
 
 def start_scheduler():
@@ -31,13 +32,16 @@ def test_reset():
 
 
 def test_set_pump():
-    h.set_pump(100)
+    h.set_pump(speed=100)
 
 
 def test_set_ledstrip():
     rgb = (100, 100, 100)
-    h = Hardware()
     h.set_ledstrip(rgb)
+
+
+def test_update_brightness():
+    h.update_brightness()
 
 
 def test_thunder_leds():
