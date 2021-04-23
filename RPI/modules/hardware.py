@@ -39,6 +39,13 @@ class Hardware:
         self.settings = settings
         if has_pigpio:
             self.gpio = pigpio.pi()
+            self.gpio.set_mode(26, pigpio.OUTPUT)
+            self.gpio.write(26, 1)
+            self.gpio.set_mode(21, pigpio.OUTPUT)
+            self.gpio.set_mode(20, pigpio.OUTPUT)
+            self.gpio.set_mode(16, pigpio.OUTPUT)
+            self.gpio.set_mode(13, pigpio.OUTPUT)
+
         self.reset()
 
     def reset(self):

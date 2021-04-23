@@ -136,6 +136,7 @@ class Program:
                     self.settings.save_to_file()
                     if msg_type == "mode" or msg_type == "refresh_interval":
                         change_interval_task('api-handling', self.settings.refresh_interval, program=self)
+                        self.refresh_api()
                     if msg_type == "brightness":
                         h.update_brightness()
             print("new settings" + str(vars(self.settings)))
