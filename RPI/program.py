@@ -6,6 +6,7 @@ import datetime
 import pytz
 import schedule
 import json
+from random import randint
 
 from modules.hardware import Hardware
 sett = Settings()
@@ -35,6 +36,8 @@ def run_program():
     schedule.every(0.1).seconds.do(check_and_parse_message, program).tag('read-mqtt')
     schedule.every(program.settings.refresh_interval).seconds.do(program.refresh_api).tag('api-handling')
     print("program started")
+    print("current settings" + str(vars(program.settings)))
+
     while True:
         schedule.run_pending()
         time.sleep(0.1)
@@ -54,7 +57,8 @@ def weather_parse(hour_data):
         elif 800 > weather_code >= 700:  # atmosphere
             h.set_all((100, 93, 91), 0)
         elif weather_code == 800:  # clear sky
-            h.make_sunny(hour_data['temp'], 0, 40)
+            # h.make_sunny(hour_data['temp'], 0, 40)
+            h.make_sunny(value=randint(70, 100))
         elif 900 > weather_code > 800:  # clouds
             h.set_all((50, 50, 50), 0)
         return weather_code
@@ -144,8 +148,9 @@ class Program:
             for hour_of_estimation in self.hourly_weather:
                 hour_of_estimation_timezoned = datetime.datetime.fromtimestamp(hour_of_estimation['dt'], timezone)
                 if hour_of_estimation_timezoned > now_with_future_forecast_time:
+                    print(hour_of_estimation)
                     return weather_parse(hour_of_estimation)
-            return False
+        return False
 
     def get_current_social_rating(self):
         posts_obj = self.SocialConnect.fetch_data()
