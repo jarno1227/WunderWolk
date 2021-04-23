@@ -5,7 +5,7 @@ import schedule
 from random import randint
 
 # testfile is in modules as it is not a unit test but a hardware test
-s = Settings
+s = Settings()
 h = Hardware(s)
 
 
