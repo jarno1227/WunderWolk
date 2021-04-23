@@ -9,6 +9,7 @@ import json
 from random import randint
 
 from modules.hardware import Hardware
+
 sett = Settings()
 h = Hardware(sett)
 
@@ -116,7 +117,6 @@ class Program:
                 elif value == "refresh":
                     self.refresh_api()
                     self.MQTT.send_message("successfully refreshed")
-
                 elif hasattr(self.settings, value):
                     self.MQTT.send_message(getattr(self.settings, value))
 

@@ -48,8 +48,8 @@ class SocialConnect(Api):
             elif post['sentiment'] == "neutral":
                 neutrals += 1
         total = negatives + positives  # + neutrals
-        negatives_percentage = negatives / total * 100
-        positives_percentage = positives / total * 100
+        negatives_percentage = negatives / total * 100 if negatives > 0 else 0
+        positives_percentage = positives / total * 100 if positives > 0 else 0
         # neutrals_percentage = neutrals / total * 100
         rating = [positives_percentage, negatives_percentage]
         return rating
