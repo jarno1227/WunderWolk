@@ -395,7 +395,18 @@ class _ManageTopicsPage extends State<ManageTopicsPage> {
                   },
                 );
               },
-            )
+            ),
+          Spacer(),
+          Container(
+            margin: EdgeInsets.only(bottom: 50),
+            child: CupertinoButton(
+              child: Text('Update mood now!'),
+              color: Colors.indigo,
+              onPressed: () {
+                widget._publish("request|refresh");
+              },
+            ),
+          )
         ],
       )),
     );
