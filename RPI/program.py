@@ -8,8 +8,8 @@ import schedule
 import json
 
 from modules.hardware import Hardware
-
-h = Hardware()
+sett = Settings()
+h = Hardware(sett)
 
 
 def change_interval_task(task_tag, interval=60, program=None):
@@ -31,7 +31,7 @@ def cancel_task(task_tag):
 
 
 def run_program():
-    program = Program(Settings())
+    program = Program(sett)
     schedule.every(0.1).seconds.do(check_and_parse_message, program).tag('read-mqtt')
     schedule.every(program.settings.refresh_interval).seconds.do(program.refresh_api).tag('api-handling')
     while True:
@@ -88,7 +88,6 @@ class Program:
         self.hourly_weather = []
 
     def refresh_api(self):
-        print(self.settings.mode)
         if self.settings.mode == "weather":
             return self.handle_weather()
         if self.settings.mode == "social":
@@ -118,6 +117,7 @@ class Program:
                     self.settings.save_settings_json(json.loads(value))
                     self.settings.save_to_file()
                     change_interval_task('api-handling', self.settings.refresh_interval, program=self)
+                    h.update_brightness()
                 except ValueError as e:
                     self.MQTT.send_message("invalid json")
 
@@ -127,6 +127,8 @@ class Program:
                     self.settings.save_to_file()
                     if msg_type == "mode" or msg_type == "refresh_interval":
                         change_interval_task('api-handling', self.settings.refresh_interval, program=self)
+                    if msg_type == "brightness":
+                        h.update_brightness()
             print("new settings" + str(vars(self.settings)))
 
     def handle_weather(self):

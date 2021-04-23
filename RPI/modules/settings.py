@@ -64,7 +64,7 @@ class Settings:
 
     @property
     def refresh_interval(self):
-        if self.mode == "social" and self.refresh_interval < 15:
+        if self.mode == "social" and self._refresh_interval < 15:
             return 15  # social searcher max 100 requests per day, 24 hours * 4 = 96. 1 hour / 4 = 15
         return self._refresh_interval
 
@@ -74,7 +74,7 @@ class Settings:
             value = int(value)
             self._refresh_interval = value
         except ValueError:
-            print(value + " is not a correct integer")
+            print(value, " is not a correct integer")
 
     @property
     def future_forecast_time(self):
@@ -86,7 +86,7 @@ class Settings:
             value = int(value)
             self._future_forecast_time = value
         except ValueError:
-            print(value + " is not a correct integer")
+            print(value, " is not a correct integer")
 
     @property
     def max_future_forecast_time(self):
@@ -103,7 +103,7 @@ class Settings:
             if 0 <= value <= 100:
                 self._brightness = value
         except ValueError:
-            print(value + " is not a correct integer")
+            print(value, " is not a correct integer")
 
     @property
     def subjects(self):
