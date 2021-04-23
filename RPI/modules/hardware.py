@@ -12,6 +12,8 @@ from time import sleep
 
 
 def arduino_map(x, in_min, in_max, out_min, out_max):
+    if x > in_max:
+        x = in_max
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
@@ -81,9 +83,9 @@ class Hardware:
         self.set_pump(200)
         self.thunder_leds()
 
-    def make_sunny(self, value, min=0, max=70):
+    def make_sunny(self, value, min_input=0, max_input=100, min_output=0, max_output=130):
         self.reset()
-        brightness = arduino_map(value, 0, 100, min, max)
+        brightness = arduino_map(value, min_input, max_input, min_output, max_output)
         self.set_ledstrip((255, brightness, 0))
 
     def set_all(self, rgb, speed):

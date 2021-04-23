@@ -57,8 +57,8 @@ def weather_parse(hour_data):
         elif 800 > weather_code >= 700:  # atmosphere
             h.set_all((100, 93, 91), 0)
         elif weather_code == 800:  # clear sky
-            # h.make_sunny(hour_data['temp'], 0, 40)
-            h.make_sunny(value=randint(70, 100))
+            h.make_sunny(value=hour_data['temp'], min_input=0, max_input=20)
+            # h.make_sunny(value=randint(70, 100))
         elif 900 > weather_code > 800:  # clouds
             h.set_all((50, 50, 50), 0)
         return weather_code
@@ -113,6 +113,10 @@ class Program:
             if msg_type == "request":
                 if value == "settings":
                     self.MQTT.send_message(str(self.settings.to_json()))
+                elif value == "refresh":
+                    self.refresh_api()
+                    self.MQTT.send_message("successfully refreshed")
+
                 elif hasattr(self.settings, value):
                     self.MQTT.send_message(getattr(self.settings, value))
 
