@@ -83,7 +83,7 @@ class Hardware:
         self.set_pump(200)
         self.thunder_leds()
 
-    def make_sunny(self, value, min_input=0, max_input=100, min_output=0, max_output=130):
+    def make_sunny(self, value, min_input=0, max_input=100, min_output=0, max_output=60):
         self.reset()
         brightness = arduino_map(value, min_input, max_input, min_output, max_output)
         self.set_ledstrip((255, brightness, 0))
