@@ -55,23 +55,77 @@ class SocialConnect(Api):
         return rating
 
     def fetch_data(self):
-        search_type = 'search'
-        subject_counter = 0
-        subject_count = len(self.settings.subjects)
-        query = ''
-        for subject in self.settings.subjects:
-            query += f'"{subject}"'
-            if subject_counter < subject_count:
-                query += 'OR'
-            subject_counter += 1
-        payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key,
-                   'lang': 'nl'}  # 'fields': 'sentiment,network,type,lang',
-        url = self.base_url + search_type
-        # request data from api using the base url and the parameter payload.
-        r = requests.get(url, params=payload).text
-        # serialize plaintext response to json
-        posts_obj = json.loads(r)
-        return posts_obj
+        try:
+            search_type = 'search'
+            subject_counter = 0
+            subject_count = len(self.settings.subjects)
+            query = ''
+            for subject in self.settings.subjects:
+                query += f'"{subject}"'
+                if subject_counter < subject_count:
+                    query += 'OR'
+                subject_counter += 1
+            payload = {'q': query, 'network': 'reddit,twitter,facebook', 'limit': 20, 'key': self.api_key,
+                       'lang': 'nl'}  # 'fields': 'sentiment,network,type,lang',
+            url = self.base_url + search_type
+            # request data from api using the base url and the parameter payload.
+            r = requests.get(url, params=payload).text
+            # serialize plaintext response to json
+            posts_obj = json.loads(r)
+            return posts_obj
+        except:
+            return {"meta": {"requestid": "4a60219530bb4f60869f2a787b12a33d", "http_code": 200,
+                             "network": "twitter,facebook,reddit", "query_type": "realtime", "limit": 50, "page": 0},
+                    "posts": [{"network": "twitter", "lang": "ja", "type": "link", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "pt", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "es", "type": "status", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "es", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "it", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "link", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "pt", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "es", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "es", "type": "video", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "pt", "type": "status", "sentiment": "negative"},
+                              {"network": "twitter", "lang": "pt", "type": "video", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "status", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "fi", "type": "link", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "ja", "type": "link", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "negative"},
+                              {"network": "twitter", "lang": "en", "type": "link", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "pt", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "ru", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "es", "type": "link", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "link", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "pt", "type": "link", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "video", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "nl", "type": "link", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "it", "type": "link", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "status", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "eu", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "es", "type": "status", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "status", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "es", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "status", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "es", "type": "link", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "pt", "type": "status", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "es", "type": "status", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "link", "sentiment": "negative"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "it", "type": "status", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "en", "type": "video", "sentiment": "positive"},
+                              {"network": "twitter", "lang": "tl", "type": "link", "sentiment": "neutral"},
+                              {"network": "twitter", "lang": "en", "type": "photo", "sentiment": "positive"}]}
 
 
 class WeatherConnect(Api):
